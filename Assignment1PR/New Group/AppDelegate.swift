@@ -12,18 +12,21 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    
-    /*
-     - GET test-api.seez.co/static/makes/ Gives you a json list of make objects
-     - GET test-api.seez.co/static/models/ gives you a json list of model objects
-     - GET test-api.seez.co/static/submodels/ gives you a json list of submodel objects
-     - GET test-api.seez.co/static/trims/ gives you a json list of trim objects
-     - GET test-api.seez.co/ai/market-estimates/?make_id=<id>&model_id=<id>&submodel_id=<id>&trim_id=<id>
-     */
-
+ 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        var main = UIViewController()
+        let nav = UINavigationController()
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        main = MainViewController(nibName: "MainViewController", bundle: nil)
+        self.window?.rootViewController = nav
+        nav.viewControllers = [main]
+        nav.isNavigationBarHidden = true
+        self.window?.makeKeyAndVisible()
+        
+        
         return true
     }
 
