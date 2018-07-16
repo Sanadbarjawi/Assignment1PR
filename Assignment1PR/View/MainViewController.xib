@@ -6,20 +6,16 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="AvenirNext.ttc">
-            <string>AvenirNext-Regular</string>
-        </array>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainViewController" customModule="Assignment1PR" customModuleProvider="target">
             <connections>
                 <outlet property="activityIndicator" destination="BEl-Vn-nDX" id="1BR-3a-Skr"/>
+                <outlet property="backBtn" destination="W2R-q8-2r0" id="GCx-4t-cqY"/>
                 <outlet property="collectionV" destination="FbU-nP-650" id="WMM-h0-Tb4"/>
-                <outlet property="nextBtn" destination="LFD-Ue-KUX" id="R2C-Zg-ppF"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -30,7 +26,7 @@
             <subviews>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" restorationIdentifier="CollectionV" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="FbU-nP-650">
                     <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="zdr-BX-d78">
                         <size key="itemSize" width="50" height="63"/>
                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -42,47 +38,41 @@
                         <outlet property="delegate" destination="-1" id="jzC-U8-xIp"/>
                     </connections>
                 </collectionView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LFD-Ue-KUX" customClass="DesignableButton" customModule="Assignment1PR" customModuleProvider="target">
-                    <rect key="frame" x="305" y="20" width="54" height="34"/>
-                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
-                    <inset key="contentEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
-                    <state key="normal" title="NEXT">
-                        <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </state>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                            <real key="value" value="1"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                            <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="AdjustFontSizetoFit" value="YES"/>
-                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="2"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <action selector="nextBtnPressed:" destination="-1" eventType="touchUpInside" id="Lgv-MU-lhK"/>
-                    </connections>
-                </button>
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="BEl-Vn-nDX">
                     <rect key="frame" x="169" y="315" width="37" height="37"/>
-                    <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </activityIndicatorView>
+                <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cRl-Qa-OJr">
+                    <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                    <items>
+                        <navigationItem title="Title" id="FbU-D9-CW0">
+                            <barButtonItem key="leftBarButtonItem" image="baseline_arrow_back_ios_black_18pt" id="W2R-q8-2r0">
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <action selector="backBtnPressed:" destination="-1" id="mVV-Fl-RTN"/>
+                                </connections>
+                            </barButtonItem>
+                        </navigationItem>
+                    </items>
+                </navigationBar>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="cRl-Qa-OJr" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="topMargin" id="2A8-U6-ghG"/>
                 <constraint firstItem="BEl-Vn-nDX" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="4Uu-uE-etY"/>
-                <constraint firstItem="LFD-Ue-KUX" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="IzO-DY-7eN"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="FbU-nP-650" secondAttribute="bottom" id="Xuc-BC-gpm"/>
-                <constraint firstItem="FbU-nP-650" firstAttribute="top" secondItem="LFD-Ue-KUX" secondAttribute="bottom" constant="10" id="f4Q-by-1to"/>
-                <constraint firstItem="FbU-nP-650" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="kLc-pJ-rT4"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="LFD-Ue-KUX" secondAttribute="trailing" constant="16" id="lbV-vf-uJx"/>
+                <constraint firstItem="FbU-nP-650" firstAttribute="top" secondItem="cRl-Qa-OJr" secondAttribute="bottom" id="HsM-Y5-H2Z"/>
+                <constraint firstItem="cRl-Qa-OJr" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="LQW-M4-Qs8"/>
+                <constraint firstItem="FbU-nP-650" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="SR7-eM-CVy"/>
+                <constraint firstItem="FbU-nP-650" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="iTw-W2-y87"/>
+                <constraint firstItem="cRl-Qa-OJr" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="nlI-8P-Pnp"/>
                 <constraint firstItem="BEl-Vn-nDX" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="pH6-7b-fYn"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="FbU-nP-650" secondAttribute="trailing" id="sCz-B5-5vN"/>
+                <constraint firstItem="FbU-nP-650" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="sSu-eb-Rog"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <point key="canvasLocation" x="33.5" y="54.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="baseline_arrow_back_ios_black_18pt" width="18" height="18"/>
+    </resources>
 </document>

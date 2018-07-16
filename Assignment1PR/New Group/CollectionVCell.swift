@@ -12,10 +12,8 @@ class CollectionVCell: UICollectionViewCell {
 
     @IBOutlet weak var imgView: UIImageView!
     @IBOutlet weak var lbl1: UILabel!
-    @IBOutlet weak var lbl2: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-
 }
