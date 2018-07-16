@@ -156,7 +156,7 @@ class MainViewController: UIViewController {
         
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if error != nil {
-                print(error!.localizedDescription)
+                return
             }
             
             guard let data = data else { return }
@@ -187,7 +187,7 @@ class MainViewController: UIViewController {
         configureActivityIndicator(animating: true)
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if error != nil {
-                print(error!.localizedDescription)
+                return
             }
             
             guard let data = data else { return }
@@ -224,7 +224,7 @@ class MainViewController: UIViewController {
         configureActivityIndicator(animating: true)
         URLSession.shared.dataTask(with: (urlComponents?.url)!) { (data, response, error) in
             if error != nil {
-                print(error!.localizedDescription)
+                return
             }
             
             if let data = data {
