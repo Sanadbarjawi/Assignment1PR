@@ -33,6 +33,28 @@ extension UIImageView{
 
 }
 extension UIViewController{
+    ///configuration for activity indicator
+    func configureActivityIndicator(animating:Bool){
+        
+        if animating{
+            let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+            activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+            activityIndicator.hidesWhenStopped = true
+            activityIndicator.color = UIColor.black
+            activityIndicator.accessibilityIdentifier = "activityIndicator"
+            self.view.addSubview(activityIndicator)
+            NSLayoutConstraint(item: activityIndicator, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1.0, constant: 0).isActive = true
+            NSLayoutConstraint(item: activityIndicator, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1.0, constant: 0).isActive = true
+            activityIndicator.startAnimating()
+        }else{
+            for view in self.view.subviews{
+                if view.accessibilityIdentifier == "activityIndicator"{
+                    view.removeFromSuperview()
+                }
+            }
+        }
+    }
+    
     func displayAlertWithDone(msg:String,completion:@escaping ()->()){
         let alert = UIAlertController(title: "Success!", message: msg, preferredStyle: .alert)
         let DoneAction = UIAlertAction(title: "Done", style: .default) { (alert) in

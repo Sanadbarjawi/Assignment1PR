@@ -20,8 +20,6 @@
 		C977C5FF20FB718C00427E26 /* CollectionVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C977C5FD20FB718C00427E26 /* CollectionVCell.swift */; };
 		C977C60020FB718C00427E26 /* CollectionVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C977C5FE20FB718C00427E26 /* CollectionVCell.xib */; };
 		C977C60220FB7B7B00427E26 /* extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C977C60120FB7B7B00427E26 /* extension.swift */; };
-		C977C60420FB841000427E26 /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C977C60320FB841000427E26 /* Manager.swift */; };
-		C977C60620FB8B6600427E26 /* DesignableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C977C60520FB8B6600427E26 /* DesignableButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,8 +38,6 @@
 		C977C5FD20FB718C00427E26 /* CollectionVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionVCell.swift; sourceTree = "<group>"; };
 		C977C5FE20FB718C00427E26 /* CollectionVCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectionVCell.xib; sourceTree = "<group>"; };
 		C977C60120FB7B7B00427E26 /* extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extension.swift; sourceTree = "<group>"; };
-		C977C60320FB841000427E26 /* Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Manager.swift; sourceTree = "<group>"; };
-		C977C60520FB8B6600427E26 /* DesignableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignableButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +51,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C905028A20FCD5CA00F1689F /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				C977C5FD20FB718C00427E26 /* CollectionVCell.swift */,
+				C977C5FE20FB718C00427E26 /* CollectionVCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		C9241B6720FB460C00469111 = {
 			isa = PBXGroup;
 			children = (
@@ -74,6 +79,7 @@
 		C9241B7220FB460D00469111 /* Assignment1PR */ = {
 			isa = PBXGroup;
 			children = (
+				C9241B7320FB460D00469111 /* AppDelegate.swift */,
 				C9241B8E20FB556D00469111 /* SupportingFiles */,
 				C9241B8B20FB521200469111 /* View */,
 				C9241B8A20FB520300469111 /* Model */,
@@ -88,9 +94,7 @@
 		C9241B8920FB51EF00469111 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				C977C5FD20FB718C00427E26 /* CollectionVCell.swift */,
 				C9241B8520FB519E00469111 /* MainViewController.swift */,
-				C9241B7320FB460D00469111 /* AppDelegate.swift */,
 			);
 			name = Controller;
 			path = "New Group";
@@ -111,8 +115,8 @@
 		C9241B8B20FB521200469111 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				C905028A20FCD5CA00F1689F /* Cell */,
 				C9241B8620FB519E00469111 /* MainViewController.xib */,
-				C977C5FE20FB718C00427E26 /* CollectionVCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -122,8 +126,6 @@
 			children = (
 				C9241B8F20FB559100469111 /* Urls.swift */,
 				C977C60120FB7B7B00427E26 /* extension.swift */,
-				C977C60320FB841000427E26 /* Manager.swift */,
-				C977C60520FB8B6600427E26 /* DesignableButton.swift */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -205,13 +207,11 @@
 				C9241B8720FB519E00469111 /* MainViewController.swift in Sources */,
 				C977C5FF20FB718C00427E26 /* CollectionVCell.swift in Sources */,
 				C977C60220FB7B7B00427E26 /* extension.swift in Sources */,
-				C977C60620FB8B6600427E26 /* DesignableButton.swift in Sources */,
 				C9241B7420FB460D00469111 /* AppDelegate.swift in Sources */,
 				C9241B9420FB67EA00469111 /* SubModelClass.swift in Sources */,
 				C9241B8D20FB549E00469111 /* MakeClass.swift in Sources */,
 				C9241B9020FB559100469111 /* Urls.swift in Sources */,
 				C9241B9620FB69BF00469111 /* TrimsClass.swift in Sources */,
-				C977C60420FB841000427E26 /* Manager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

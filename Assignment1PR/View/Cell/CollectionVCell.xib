@@ -70,7 +70,7 @@
                 <outlet property="imgView" destination="kZK-iU-Srg" id="DJD-mz-zXv"/>
                 <outlet property="lbl1" destination="3UV-vX-GAY" id="E0q-h9-Q1G"/>
             </connections>
-            <point key="canvasLocation" x="265" y="-40"/>
+            <point key="canvasLocation" x="51" y="-174"/>
         </collectionViewCell>
     </objects>
 </document>

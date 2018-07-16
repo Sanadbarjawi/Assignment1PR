@@ -18,5 +18,5 @@ class ModelClass:Decodable{//array of objects
     var make_id:String?
     var name:String?
     var updated_at:String?
-    
 }
+

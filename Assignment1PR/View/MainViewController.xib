@@ -13,9 +13,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainViewController" customModule="Assignment1PR" customModuleProvider="target">
             <connections>
-                <outlet property="activityIndicator" destination="BEl-Vn-nDX" id="1BR-3a-Skr"/>
                 <outlet property="backBtn" destination="W2R-q8-2r0" id="GCx-4t-cqY"/>
                 <outlet property="collectionV" destination="FbU-nP-650" id="WMM-h0-Tb4"/>
+                <outlet property="navBar" destination="cRl-Qa-OJr" id="xyG-D3-2qa"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -38,10 +38,6 @@
                         <outlet property="delegate" destination="-1" id="jzC-U8-xIp"/>
                     </connections>
                 </collectionView>
-                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="BEl-Vn-nDX">
-                    <rect key="frame" x="169" y="315" width="37" height="37"/>
-                    <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                </activityIndicatorView>
                 <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cRl-Qa-OJr">
                     <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                     <items>
@@ -59,17 +55,15 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="cRl-Qa-OJr" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="topMargin" id="2A8-U6-ghG"/>
-                <constraint firstItem="BEl-Vn-nDX" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="4Uu-uE-etY"/>
                 <constraint firstItem="FbU-nP-650" firstAttribute="top" secondItem="cRl-Qa-OJr" secondAttribute="bottom" id="HsM-Y5-H2Z"/>
                 <constraint firstItem="cRl-Qa-OJr" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="LQW-M4-Qs8"/>
                 <constraint firstItem="FbU-nP-650" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="SR7-eM-CVy"/>
                 <constraint firstItem="FbU-nP-650" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="iTw-W2-y87"/>
                 <constraint firstItem="cRl-Qa-OJr" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="nlI-8P-Pnp"/>
-                <constraint firstItem="BEl-Vn-nDX" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="pH6-7b-fYn"/>
                 <constraint firstItem="FbU-nP-650" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="sSu-eb-Rog"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <point key="canvasLocation" x="33.5" y="54.5"/>
+            <point key="canvasLocation" x="-62" y="45"/>
         </view>
     </objects>
     <resources>
