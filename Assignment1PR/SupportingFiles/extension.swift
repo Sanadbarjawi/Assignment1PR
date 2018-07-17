@@ -35,7 +35,6 @@ extension UIImageView{
 extension UIViewController{
     ///configuration for activity indicator
     func configureActivityIndicator(animating:Bool){
-        
         if animating{
             let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
             activityIndicator.translatesAutoresizingMaskIntoConstraints = false
@@ -65,4 +64,9 @@ extension UIViewController{
     }
 
    
+}
+extension Bool {
+    mutating func toggle() {
+        self = !self
+    }
 }

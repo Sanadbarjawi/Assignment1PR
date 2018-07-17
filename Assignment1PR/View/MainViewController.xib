@@ -6,16 +6,14 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainViewController" customModule="Assignment1PR" customModuleProvider="target">
             <connections>
-                <outlet property="backBtn" destination="W2R-q8-2r0" id="GCx-4t-cqY"/>
                 <outlet property="collectionV" destination="FbU-nP-650" id="WMM-h0-Tb4"/>
-                <outlet property="navBar" destination="cRl-Qa-OJr" id="xyG-D3-2qa"/>
+                <outlet property="sceneHierarchyStackView" destination="U2q-Qq-5xb" id="3Ec-ey-Cab"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -24,11 +22,26 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="onJ-sm-Eyv">
+                    <rect key="frame" x="0.0" y="20" width="375" height="40"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="U2q-Qq-5xb">
+                            <rect key="frame" x="8" y="0.0" width="359" height="40"/>
+                        </stackView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="2br-Sd-WVH"/>
+                        <constraint firstItem="U2q-Qq-5xb" firstAttribute="top" secondItem="onJ-sm-Eyv" secondAttribute="top" id="jtZ-Sz-t3w"/>
+                        <constraint firstAttribute="trailing" secondItem="U2q-Qq-5xb" secondAttribute="trailing" constant="8" id="rxa-9j-T3j"/>
+                        <constraint firstAttribute="bottom" secondItem="U2q-Qq-5xb" secondAttribute="bottom" id="wUn-n5-9sc"/>
+                        <constraint firstItem="U2q-Qq-5xb" firstAttribute="leading" secondItem="onJ-sm-Eyv" secondAttribute="leading" constant="8" id="yJj-GV-aTu"/>
+                    </constraints>
+                </view>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" restorationIdentifier="CollectionV" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="FbU-nP-650">
-                    <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                    <rect key="frame" x="0.0" y="60" width="375" height="607"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="zdr-BX-d78">
-                        <size key="itemSize" width="50" height="63"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="zdr-BX-d78">
+                        <size key="itemSize" width="50" height="80"/>
                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
                         <size key="footerReferenceSize" width="0.0" height="0.0"/>
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -38,35 +51,29 @@
                         <outlet property="delegate" destination="-1" id="jzC-U8-xIp"/>
                     </connections>
                 </collectionView>
-                <navigationBar hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cRl-Qa-OJr">
-                    <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                    <items>
-                        <navigationItem title="Title" id="FbU-D9-CW0">
-                            <barButtonItem key="leftBarButtonItem" image="baseline_arrow_back_ios_black_18pt" id="W2R-q8-2r0">
-                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <connections>
-                                    <action selector="backBtnPressed:" destination="-1" id="mVV-Fl-RTN"/>
-                                </connections>
-                            </barButtonItem>
-                        </navigationItem>
-                    </items>
-                </navigationBar>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="cRl-Qa-OJr" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="topMargin" id="2A8-U6-ghG"/>
-                <constraint firstItem="FbU-nP-650" firstAttribute="top" secondItem="cRl-Qa-OJr" secondAttribute="bottom" id="HsM-Y5-H2Z"/>
-                <constraint firstItem="cRl-Qa-OJr" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="LQW-M4-Qs8"/>
+                <constraint firstItem="FbU-nP-650" firstAttribute="top" secondItem="onJ-sm-Eyv" secondAttribute="bottom" id="0b7-eC-ZZG"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="onJ-sm-Eyv" secondAttribute="trailing" id="RcR-BB-c4C"/>
                 <constraint firstItem="FbU-nP-650" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="SR7-eM-CVy"/>
+                <constraint firstItem="onJ-sm-Eyv" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Wyw-87-0VT"/>
+                <constraint firstItem="onJ-sm-Eyv" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="eg6-rc-s7I"/>
                 <constraint firstItem="FbU-nP-650" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="iTw-W2-y87"/>
-                <constraint firstItem="cRl-Qa-OJr" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="nlI-8P-Pnp"/>
                 <constraint firstItem="FbU-nP-650" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="sSu-eb-Rog"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <point key="canvasLocation" x="-62" y="45"/>
+            <point key="canvasLocation" x="-127.5" y="28.5"/>
         </view>
+        <navigationBar contentMode="scaleToFill" id="Yk0-B8-Xsf">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+            <items>
+                <navigationItem title="Title" id="6zL-ML-yz2">
+                    <barButtonItem key="leftBarButtonItem" title="Item" id="EnV-6K-cig"/>
+                </navigationItem>
+            </items>
+            <point key="canvasLocation" x="537" y="57"/>
+        </navigationBar>
     </objects>
-    <resources>
-        <image name="baseline_arrow_back_ios_black_18pt" width="18" height="18"/>
-    </resources>
 </document>

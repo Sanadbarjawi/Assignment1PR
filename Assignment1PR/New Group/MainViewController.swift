@@ -8,74 +8,90 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+protocol SceneConfigurationDelegate : AnyObject{
+    func configureSceneType(isGrid:Bool)
+}
+
+class MainViewController: UIViewController,SceneConfigurationDelegate {
+    func configureSceneType(isGrid: Bool) {//false = list ,true = grid
+              switchSceneType(type: isGrid)
+    }
+    
     //MARK: - Outlets
     @IBOutlet weak var collectionV: UICollectionView!
-    @IBOutlet weak var backBtn: UIBarButtonItem!
-    @IBOutlet weak var navBar: UINavigationBar!
-    
+    @IBOutlet weak var sceneHierarchyStackView: UIStackView!
     
     //MARK: - CollectionViewDataFlow custom Variables
     let sectionInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-    let itemsPerRow:CGFloat = 1
+    var itemsPerRow:CGFloat = 1
     
     //MARK: - custom Variables
     var makeArray : [MakeClass]?
     var modelArray : [ModelClass]?
     var subModelArray : [SubModelClass]?
     var trimArray : [TrimsClass]?
-    
     var makeId:String?
     var modeId:String?
     var subModelId:String?
     var trimId:String?
-    
-    var currentSceneIndex = 0
+    var urls:Urls?
+    weak var delegate:SceneConfigurationDelegate?
+    var toggleSceneTypeFlag = false
     //MARK: - view life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        urls = Urls()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        delegate = self
+        guard ((delegate?.configureSceneType(isGrid: toggleSceneTypeFlag)) != nil) else {return}
+        
         checkWhichScreen()
         setUpUI()
     }
-    
-    
-    
-    @IBAction func backBtnPressed(_ sender: Any) {
-        navigationController?.popViewController(animated: true)
-    }
-    
+
     //MARK: - SetUpUI Function
     func setUpUI(){
+        let toggleSceneTypeBtn = UIBarButtonItem(image: nil, style: .plain, target: self, action: #selector(toggleSceneType))
+        toggleSceneTypeBtn.title = "Toggle"
+        self.navigationItem.rightBarButtonItem  = toggleSceneTypeBtn
         collectionV.register(UINib(nibName: "CollectionVCell", bundle: nil), forCellWithReuseIdentifier: "CollectionVCell")
     }
+    func switchSceneType(type:Bool){
+        print(" is grid ?\(type)")
+        if type {
+            itemsPerRow = 3
+        }else{
+            itemsPerRow = 1
+        }
+    }
+    @objc func toggleSceneType(){
 
+        toggleSceneTypeFlag.toggle()
+        switchSceneType(type: toggleSceneTypeFlag)
+        collectionV.reloadData()
+    }
     func checkWhichScreen() {
         guard let viewControllersCount = navigationController?.viewControllers.count else {return}
         switch viewControllersCount {
         case 1:
-            currentSceneIndex = 1
             getMake()
         case 2:
-            currentSceneIndex = 2
             getModelObjects()
         case 3:
-            currentSceneIndex = 3
             getSubModelObjects()
         case 4:
-            currentSceneIndex = 4
             getTrims()
         default:
-            currentSceneIndex = 5
-            getPrice()
+            break
         }
     }
     //MARK: - MakeObjects API
     func getMake(){
-        let urlString = Urls.sharedInstance.makeObjApi
+        
+        guard let urlString = urls?.makeObjApi  else { return }
         guard let url = URL(string: urlString) else { return }
         configureActivityIndicator(animating: true)
         URLSession.shared.dataTask(with: url) { (data, response, error) in
@@ -100,7 +116,7 @@ class MainViewController: UIViewController {
     
     //MARK: - GetModelObjects API
     func getModelObjects(){
-        let urlString = Urls.sharedInstance.modelObjApi
+       guard let urlString = urls?.modelObjApi  else { return }
         guard let url = URL(string: urlString) else { return }
         configureActivityIndicator(animating: true)
         URLSession.shared.dataTask(with: url) { (data, response, error) in
@@ -118,6 +134,7 @@ class MainViewController: UIViewController {
                   self.modelArray = self.modelArray?.filter({ (modelClass) -> Bool in
                         modelClass.makeId == self.makeId
                    })
+                 
                     self.collectionV.reloadData()
                     self.configureActivityIndicator(animating: false)
                 }
@@ -131,7 +148,7 @@ class MainViewController: UIViewController {
     //MARK: - GetSubModelObjects API
     func getSubModelObjects(){
         
-        let urlString = Urls.sharedInstance.subModelApi
+        guard let urlString = urls?.subModelApi  else { return }
         guard let url = URL(string: urlString) else { return }
         configureActivityIndicator(animating: true)
         
@@ -163,7 +180,7 @@ class MainViewController: UIViewController {
     
     //MARK: - GetTrims API
     func getTrims(){
-        let urlString = Urls.sharedInstance.trimsObjApi
+        guard let urlString = urls?.trimsObjApi  else { return }
         guard let url = URL(string: urlString) else { return }
         
         configureActivityIndicator(animating: true)
@@ -195,7 +212,7 @@ class MainViewController: UIViewController {
     
     //MARK: - getPrice API
     func getPrice(){
-        let urlString = Urls.sharedInstance.calculationApi
+        guard let urlString = urls?.calculationApi  else { return }
         //params:make_id=&model_id=&submodel_id=&trim_id=
         var urlComponents = URLComponents(string: urlString)
         
@@ -211,7 +228,6 @@ class MainViewController: UIViewController {
                 self.configureActivityIndicator(animating: false)
                 return
             }
-            
             if let data = data {
                 let result = String(data: data, encoding: String.Encoding.utf8)
                 self.displayAlertWithDone(msg: "Result = \(result!)", completion: {
@@ -229,7 +245,9 @@ extension MainViewController: UICollectionViewDelegateFlowLayout,UICollectionVie
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         var numOfItems = 0
         
-        switch currentSceneIndex {
+        guard let viewControllersCount = navigationController?.viewControllers.count else {return 0}
+ 
+        switch viewControllersCount {
         case 1:
             guard let makeArrayCount = makeArray?.count else { return numOfItems }
             numOfItems = makeArrayCount
@@ -243,16 +261,21 @@ extension MainViewController: UICollectionViewDelegateFlowLayout,UICollectionVie
             guard let TrimArrayCount = trimArray?.count else { return numOfItems }
             numOfItems = TrimArrayCount
         default:
-            print("mmmm")
+            break
         }
         return numOfItems
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+      
+        
          let vc = MainViewController(nibName: "MainViewController", bundle: nil)
-        switch currentSceneIndex {
+        
+        guard let viewControllersCount = navigationController?.viewControllers.count else {return}
+        switch viewControllersCount {
         case 1:
             guard let makeId = makeArray![indexPath.row].id else {  return }
             vc.makeId = makeId
+           
         case 2:
             guard let modelId = modelArray![indexPath.row].id else { return }
             vc.modeId = modelId
@@ -268,15 +291,20 @@ extension MainViewController: UICollectionViewDelegateFlowLayout,UICollectionVie
             vc.subModelId = subModelId
             vc.modeId = modeId
             vc.makeId = makeId
+            getPrice()
+            return
         default:
-            print("mmmm")
+            break
         }
+        
+        vc.toggleSceneTypeFlag = toggleSceneTypeFlag
         navigationController?.pushViewController(vc, animated: true)
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionV.dequeueReusableCell(withReuseIdentifier: "CollectionVCell", for: indexPath) as! CollectionVCell
-        
-        switch currentSceneIndex {
+        cell.imgView.image = nil
+        guard let viewControllersCount = navigationController?.viewControllers.count else {return cell}
+        switch viewControllersCount {
         case 1:
             guard makeArray != nil else{return cell}
             cell.imgView.isHidden = false
@@ -294,17 +322,16 @@ extension MainViewController: UICollectionViewDelegateFlowLayout,UICollectionVie
             guard trimArray != nil else{return cell}
             cell.imgView.isHidden = true
             cell.lbl1.text = trimArray![indexPath.row].name
-        case 5:
-            print("mmm")
         default:
-            print("mmm")
+            break
         }
-        
         return cell
     }
+  
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
         let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
         let availableWidth = collectionView.frame.width - paddingSpace
         let widthPerItem = availableWidth / itemsPerRow
@@ -313,6 +340,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout,UICollectionVie
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
+        
         return sectionInsets
     }
     

@@ -11,7 +11,7 @@ class ModelClass:Decodable{//array of objects
 
     var active:Bool?
     var bodyTypeId:String?
-    var bodyTypeIds = [String]()
+    var bodyTypeIds : [String]?
     var createdAt:String?
     var discontinuedYear:Int?
     var id:String?
@@ -19,7 +19,6 @@ class ModelClass:Decodable{//array of objects
     var name:String?
     var updatedAt:String?
   
-    
     private enum CodingKeys:String, CodingKey{
         case active
         case bodyTypeId = "body_type_id"

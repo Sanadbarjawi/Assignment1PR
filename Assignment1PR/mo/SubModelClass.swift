@@ -11,11 +11,11 @@ class SubModelClass:Decodable{
     
     var active:Bool?
     var createdAt:String?
-    var engineIds = [String]()
+    var engineIds:[String]?
     var id:String?
     var modelId:String?
     var name:String?
-    var trimIds = [String]()
+    var trimIds:[String]?
     var updatedAt:String?
 
     private enum CodingKeys:String, CodingKey{

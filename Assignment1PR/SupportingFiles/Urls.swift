@@ -7,22 +7,39 @@
 //
 
 import Foundation
-class Urls{
+
+ public class Urls{
     
-    static var sharedInstance = Urls()
-    
-    private let baseUrl = "http://test-api.seez.co/static"
-    
-    lazy var subModelApi = self.baseUrl + "/submodels/"
-    lazy var makeObjApi = self.baseUrl + "/makes/"
-    lazy var modelObjApi = self.baseUrl + "/models/"
-    lazy var trimsObjApi = self.baseUrl + "/trims/"
-    
+    var baseUrl:String {
+        get {
+            return "http://test-api.seez.co/static"
+        }
+    }
+    var makeObjApi:String{
+        get{
+            return baseUrl + "/makes/"
+        }
+    }
+    var modelObjApi:String{
+        get{
+            return baseUrl + "/models/"
+        }
+    }
+    var subModelApi:String{
+        get{
+            return baseUrl + "/submodels/"
+        }
+    }
+    var trimsObjApi:String{
+        get{
+            return baseUrl + "/trims/"
+        }
+    }
     
     ///params:make_id=<id>&model_id=<id>&submodel_id=<id>&trim_id=<id>
-    lazy var calculationApi = "http://test-api.seez.co/ai/market-estimates/"
-    
-    private init(){
-        
+    var calculationApi:String{
+        get{
+            return "http://test-api.seez.co/ai/market-estimates/"
+        }
     }
 }
