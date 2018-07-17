@@ -7,13 +7,29 @@
 //
 
 import Foundation
-class MakeClass:Decodable{//array of objects
+class MakeClass:Codable{//array of objects
 
     var active:Bool?
-    var created_at:String?
+    var createdAt:String?
     var id:String?
-    var logo_uri:String?
+    var logoUri:String?
     var name:String?
-    var updated_at:String?
-
+    var updatedAt:String?
+/*active
+     created_at
+     id
+     logo_uri
+     name
+     updated_at
+ */
+    private enum CodingKeys : String, CodingKey {
+        case active
+        case createdAt = "created_at"
+        case id
+        case logoUri = "logo_uri"
+        case name
+        case updatedAt = "updated_at"
+    }
+ 
 }
+

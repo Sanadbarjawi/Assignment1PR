@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         main = MainViewController(nibName: "MainViewController", bundle: nil)
         self.window?.rootViewController = nav
         nav.viewControllers = [main]
-        nav.isNavigationBarHidden = true
+//        nav.isNavigationBarHidden = false
         self.window?.makeKeyAndVisible()
         
         

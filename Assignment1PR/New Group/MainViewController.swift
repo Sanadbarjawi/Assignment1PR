@@ -295,7 +295,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout,UICollectionVie
         case 1:
             guard makeArray != nil else{return cell}
             cell.imgView.isHidden = false
-            cell.imgView.downloadedFrom(link: makeArray![indexPath.row].logo_uri!)
+            cell.imgView.downloadedFrom(link: makeArray![indexPath.row].logoUri!)
             cell.lbl1.text = makeArray![indexPath.row].name
         case 2:
             guard modelArray != nil else{return cell}

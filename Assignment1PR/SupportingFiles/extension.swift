@@ -57,10 +57,10 @@ extension UIViewController{
     
     func displayAlertWithDone(msg:String,completion:@escaping ()->()){
         let alert = UIAlertController(title: "Success!", message: msg, preferredStyle: .alert)
-        let DoneAction = UIAlertAction(title: "Done", style: .default) { (alert) in
+        let doneAction = UIAlertAction(title: "Done", style: .default) { (alert) in
             completion()
         }
-        alert.addAction(DoneAction)
+        alert.addAction(doneAction)
         present(alert, animated: true, completion: nil)
     }
 
