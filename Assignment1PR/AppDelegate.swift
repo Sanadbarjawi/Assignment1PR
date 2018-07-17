@@ -23,9 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         main = MainViewController(nibName: "MainViewController", bundle: nil)
         self.window?.rootViewController = nav
         nav.viewControllers = [main]
-//        nav.isNavigationBarHidden = false
+        nav.navigationItem.backBarButtonItem?.title = ""
         self.window?.makeKeyAndVisible()
-        
+
         
         return true
     }

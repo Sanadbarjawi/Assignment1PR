@@ -10,12 +10,22 @@ import Foundation
 class SubModelClass:Decodable{
     
     var active:Bool?
-    var created_at:String?
-    var engine_ids = [String]()
+    var createdAt:String?
+    var engineIds = [String]()
     var id:String?
-    var model_id:String?
+    var modelId:String?
     var name:String?
-    var trim_ids = [String]()
-    var updated_at:String?
-    
+    var trimIds = [String]()
+    var updatedAt:String?
+
+    private enum CodingKeys:String, CodingKey{
+        case active
+        case createdAt = "created_at"
+        case engineIds = "engine_ids"
+        case id = "id"
+        case modelId = "model_id"
+        case name = "name"
+        case trimIds = "trim_ids"
+        case updatedAt = "updated_at"
+    }
 }

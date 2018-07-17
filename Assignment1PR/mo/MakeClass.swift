@@ -15,13 +15,7 @@ class MakeClass:Codable{//array of objects
     var logoUri:String?
     var name:String?
     var updatedAt:String?
-/*active
-     created_at
-     id
-     logo_uri
-     name
-     updated_at
- */
+
     private enum CodingKeys : String, CodingKey {
         case active
         case createdAt = "created_at"

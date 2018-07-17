@@ -10,13 +10,26 @@ import Foundation
 class ModelClass:Decodable{//array of objects
 
     var active:Bool?
-    var body_type_id:String?
-    var body_type_ids = [String]()
-    var created_at:String?
-    var discontinued_year:Int?
+    var bodyTypeId:String?
+    var bodyTypeIds = [String]()
+    var createdAt:String?
+    var discontinuedYear:Int?
     var id:String?
-    var make_id:String?
+    var makeId:String?
     var name:String?
-    var updated_at:String?
+    var updatedAt:String?
+  
+    
+    private enum CodingKeys:String, CodingKey{
+        case active
+        case bodyTypeId = "body_type_id"
+        case bodyTypeIds = "body_type_ids"
+        case createdAt = "created_at"
+        case discontinuedYear = "discontinued_year"
+        case id = "id"
+        case makeId = "make_id"
+        case name = "name"
+        case updatedAt = "updatedAt"
+    }
 }
 

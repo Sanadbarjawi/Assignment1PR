@@ -26,7 +26,7 @@ class MainViewController: UIViewController {
     var trimArray : [TrimsClass]?
     
     var makeId:String?
-    var model_Id:String?
+    var modeId:String?
     var subModelId:String?
     var trimId:String?
     
@@ -34,7 +34,6 @@ class MainViewController: UIViewController {
     //MARK: - view life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -49,45 +48,27 @@ class MainViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
-    
     //MARK: - SetUpUI Function
     func setUpUI(){
         collectionV.register(UINib(nibName: "CollectionVCell", bundle: nil), forCellWithReuseIdentifier: "CollectionVCell")
     }
-    func hideShowBackBtn(flag:Int){
-        switch flag {
-        case 0://hides
-            backBtn.tintColor = UIColor.clear
-            
-        case 1://shows
-            if let backBtn = self.navigationItem.rightBarButtonItem {
-                backBtn.tintColor = UIColor.black
-            }
-        default:
-            print("mmm")
-        }
-        
-    }
+
     func checkWhichScreen() {
-        switch navigationController?.viewControllers.count {
-        case 1?:
-            hideShowBackBtn(flag: 0)
+        guard let viewControllersCount = navigationController?.viewControllers.count else {return}
+        switch viewControllersCount {
+        case 1:
             currentSceneIndex = 1
             getMake()
-        case 2?:
-            hideShowBackBtn(flag: 1)
+        case 2:
             currentSceneIndex = 2
             getModelObjects()
-        case 3?:
-            hideShowBackBtn(flag: 1)
+        case 3:
             currentSceneIndex = 3
             getSubModelObjects()
-        case 4?:
-            hideShowBackBtn(flag: 1)
+        case 4:
             currentSceneIndex = 4
             getTrims()
         default:
-            hideShowBackBtn(flag: 1)
             currentSceneIndex = 5
             getPrice()
         }
@@ -135,14 +116,14 @@ class MainViewController: UIViewController {
                 DispatchQueue.main.async {
                     
                   self.modelArray = self.modelArray?.filter({ (modelClass) -> Bool in
-                        modelClass.make_id == self.makeId
+                        modelClass.makeId == self.makeId
                    })
                     self.collectionV.reloadData()
                     self.configureActivityIndicator(animating: false)
-                    
                 }
-            } catch let jsonError {
-                print(jsonError)
+            } catch{
+                self.configureActivityIndicator(animating: false)
+                return
             }
             }.resume()
     }
@@ -166,14 +147,15 @@ class MainViewController: UIViewController {
                 //Get back to the main queue
                 DispatchQueue.main.async {
                     self.subModelArray = self.subModelArray?.filter({ (subModelClass) -> Bool in
-                        subModelClass.model_id == self.model_Id
+                       return subModelClass.modelId == self.modeId
                     })
                     self.collectionV.reloadData()
                     self.configureActivityIndicator(animating: false)
-                    
                 }
-            } catch let jsonError {
-                print(jsonError)
+            } catch {
+                self.configureActivityIndicator(animating: false)
+                return
+
             }
             }.resume()
     }
@@ -198,18 +180,20 @@ class MainViewController: UIViewController {
                 //Get back to the main queue
                 DispatchQueue.main.async {
                     self.trimArray = self.trimArray?.filter({ (trimsClass) -> Bool in
-                        trimsClass.make_id == self.makeId
+                       return trimsClass.makeId == self.makeId
                     })
                     self.collectionV.reloadData()
                     self.configureActivityIndicator(animating: false)
                 }
-            } catch let jsonError {
-                print(jsonError)
+            } catch  {
+                self.configureActivityIndicator(animating: false)
+                return
+
             }
             }.resume()
     }
     
-    //MARK: - dotheMath API
+    //MARK: - getPrice API
     func getPrice(){
         let urlString = Urls.sharedInstance.calculationApi
         //params:make_id=&model_id=&submodel_id=&trim_id=
@@ -217,24 +201,25 @@ class MainViewController: UIViewController {
         
         urlComponents?.queryItems = [
             URLQueryItem(name: "make_id", value: makeId),
-            URLQueryItem(name: "model_id", value: model_Id),
+            URLQueryItem(name: "model_id", value: modeId),
             URLQueryItem(name: "submodel_id", value: subModelId),
             URLQueryItem(name: "trim_id", value: trimId),
         ]
         configureActivityIndicator(animating: true)
         URLSession.shared.dataTask(with: (urlComponents?.url)!) { (data, response, error) in
             if error != nil {
+                self.configureActivityIndicator(animating: false)
                 return
             }
             
             if let data = data {
                 let result = String(data: data, encoding: String.Encoding.utf8)
                 self.displayAlertWithDone(msg: "Result = \(result!)", completion: {
+                    self.configureActivityIndicator(animating: false)
                     self.navigationController?.popToRootViewController(animated: true)
                 })
             }
             }.resume()
-        configureActivityIndicator(animating: false)
     }
 }
 
@@ -270,18 +255,18 @@ extension MainViewController: UICollectionViewDelegateFlowLayout,UICollectionVie
             vc.makeId = makeId
         case 2:
             guard let modelId = modelArray![indexPath.row].id else { return }
-            vc.model_Id = modelId
+            vc.modeId = modelId
             vc.makeId = makeId
         case 3:
             guard let subModelId = subModelArray![indexPath.row].id else { return }
             vc.subModelId = subModelId
-            vc.model_Id = model_Id
+            vc.modeId = modeId
             vc.makeId = makeId
         case 4:
             guard let trimId = trimArray![indexPath.row].id else { return }
             vc.trimId = trimId
             vc.subModelId = subModelId
-            vc.model_Id = model_Id
+            vc.modeId = modeId
             vc.makeId = makeId
         default:
             print("mmmm")
