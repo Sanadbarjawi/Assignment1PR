@@ -53,12 +53,11 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
     //MARK: - SetUpUI Function
     func setUpUI(){
 
-  
-        self.navigationItem.hidesBackButton = true
-        let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(backPressed))
-        self.navigationItem.leftBarButtonItem = newBackButton
         if (navigationController?.viewControllers.count)! > 1 {
-            
+            let newBackButton = UIBarButtonItem(image: #imageLiteral(resourceName: "baseline_arrow_back_ios_black_18pt"), landscapeImagePhone: #imageLiteral(resourceName: "baseline_arrow_back_ios_black_18pt"), style: .plain, target: self, action: #selector(backPressed))
+            self.navigationItem.leftBarButtonItem = newBackButton
+        }else{
+            self.navigationItem.hidesBackButton = true
         }
         
         let toggleSceneTypeBtn = UIBarButtonItem(image: nil, style: .plain, target: self, action: #selector(toggleSceneType))
@@ -72,7 +71,6 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
         delegate?.configureSceneType(isGrid: toggleSceneTypeFlag)
     }
     func switchSceneType(type:Bool){
-        print(" is grid ?\(type)")
         if type {
             itemsPerRow = 3
         }else{
@@ -318,7 +316,6 @@ extension MainViewController: UICollectionViewDelegateFlowLayout,UICollectionVie
         
         vc.toggleSceneTypeFlag = toggleSceneTypeFlag
         navigationController?.pushViewController(vc, animated: true)
-//        delegate?.configureSceneType(isGrid: toggleSceneTypeFlag)
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionV.dequeueReusableCell(withReuseIdentifier: "CollectionVCell", for: indexPath) as! CollectionVCell
