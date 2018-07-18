@@ -8,18 +8,20 @@
 
 import UIKit
 
-protocol SceneConfigurationDelegate : AnyObject{
-    func configureSceneType(isGrid:Bool)
+protocol SceneConfigurationProtocol : AnyObject{
+    func configureSceneTypeDelegate(isGrid:Bool)
 }
 
-class MainViewController: UIViewController,SceneConfigurationDelegate {
-    func configureSceneType(isGrid: Bool) {//false = list ,true = grid
+class MainViewController: UIViewController,SceneConfigurationProtocol {
+   
+    
+    func configureSceneTypeDelegate(isGrid: Bool) {//false = list ,true = grid
               switchSceneType(type: isGrid)
     }
     
     //MARK: - Outlets
     @IBOutlet weak var collectionV: UICollectionView!
-    @IBOutlet weak var sceneHierarchyStackView: UIStackView!
+    @IBOutlet var hierarchyLbl: UILabel!
     
     //MARK: - CollectionViewDataFlow custom Variables
     let sectionInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -31,24 +33,32 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
     var subModelArray : [SubModelClass]?
     var trimArray : [TrimsClass]?
     var makeId:String?
-    var modeId:String?
+    var modelId:String?
     var subModelId:String?
     var trimId:String?
-    var urls:Urls?
-    weak var delegate:SceneConfigurationDelegate?
+    var trimIdsArray:[String]?
+    
+    //names
+    var hierarchyText:String?
+    var modelName:String?
+    var subModelName:String?
+    var trimName:String?
+    
+    
+    var slicedSceneNamesArray:[String]?
+    weak var delegate:SceneConfigurationProtocol?
     var toggleSceneTypeFlag = false
     
     //MARK: - view life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        urls = Urls()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        switchSceneType(type: toggleSceneTypeFlag)
         checkWhichScreen()
         setUpUI()
+        switchSceneType(type: toggleSceneTypeFlag)
     }
 
     //MARK: - configureBackButton Function
@@ -64,34 +74,34 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
     //MARK: - Buttons Actions
     @objc func backPressed(){
         navigationController?.popViewController(animated: true)
-        delegate?.configureSceneType(isGrid: toggleSceneTypeFlag)
+        delegate?.configureSceneTypeDelegate(isGrid: toggleSceneTypeFlag)
     }
     @objc func toggleSceneType(){
-        
         toggleSceneTypeFlag.toggle()
         switchSceneType(type: toggleSceneTypeFlag)
         collectionV.reloadData()
     }
     
     //MARK: - Custom UIFunctions
+
     func setUpUI(){
-        
+        if hierarchyText != nil{hierarchyLbl.text = hierarchyText}
         configureBackButton()
         let toggleSceneTypeBtn = UIBarButtonItem(image: nil, style: .plain, target: self, action: #selector(toggleSceneType))
         toggleSceneTypeBtn.title = "Toggle"
         self.navigationItem.rightBarButtonItem  = toggleSceneTypeBtn
         collectionV.register(UINib(nibName: "CollectionVCell", bundle: nil), forCellWithReuseIdentifier: "CollectionVCell")
     }
+    
     func switchSceneType(type:Bool){
         if type {
             itemsPerRow = 3
         }else{
             itemsPerRow = 1
         }
-        /////here
         collectionV.reloadData()
     }
-  
+
     func checkWhichScreen() {
         guard let viewControllersCount = navigationController?.viewControllers.count else {return}
         switch viewControllersCount {
@@ -111,7 +121,7 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
     //MARK: - MakeObjects API
     func getMake(){
         
-        guard let urlString = urls?.makeObjApi  else { return }
+       let urlString = UrlsEnum.makeObjApi.rawValue
         guard let url = URL(string: urlString) else { return }
         configureActivityIndicator(animating: true)
         URLSession.shared.dataTask(with: url) { (data, response, error) in
@@ -137,7 +147,7 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
     
     //MARK: - GetModelObjects API
     func getModelObjects(){
-       guard let urlString = urls?.modelObjApi  else { return }
+        let urlString = UrlsEnum.modelObjApi.rawValue
         guard let url = URL(string: urlString) else { return }
         configureActivityIndicator(animating: true)
         URLSession.shared.dataTask(with: url) { (data, response, error) in
@@ -152,12 +162,10 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
                 let ModelData = try JSONDecoder().decode([ModelClass].self, from: data)
                 self.modelArray = ModelData
                 //Get back to the main queue
+                self.modelArray = self.modelArray?.filter({ (modelClass) -> Bool in
+                    modelClass.makeId == self.makeId
+                })
                 DispatchQueue.main.async {
-                    
-                  self.modelArray = self.modelArray?.filter({ (modelClass) -> Bool in
-                        modelClass.makeId == self.makeId
-                   })
-                 
                     self.collectionV.reloadData()
                     self.configureActivityIndicator(animating: false)
                 }
@@ -170,14 +178,14 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
     
     //MARK: - GetSubModelObjects API
     func getSubModelObjects(){
-        guard let urlString = urls?.subModelApi  else { return }
+        
+        let urlString = UrlsEnum.subModelApi.rawValue
         guard let url = URL(string: urlString) else { return }
         configureActivityIndicator(animating: true)
         
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if error != nil {
                 print(error.debugDescription)
-
                 return
             }
             
@@ -186,10 +194,10 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
                 let subModelData = try JSONDecoder().decode([SubModelClass].self, from: data)
                  self.subModelArray = subModelData
                 //Get back to the main queue
+                self.subModelArray = self.subModelArray?.filter({ (subModelClass) -> Bool in
+                    return subModelClass.modelId == self.modelId
+                })
                 DispatchQueue.main.async {
-                    self.subModelArray = self.subModelArray?.filter({ (subModelClass) -> Bool in
-                       return subModelClass.modelId == self.modeId
-                    })
                     self.collectionV.reloadData()
                     self.configureActivityIndicator(animating: false)
                 }
@@ -204,7 +212,7 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
     
     //MARK: - GetTrims API
     func getTrims(){
-        guard let urlString = urls?.trimsObjApi  else { return }
+        let urlString = UrlsEnum.trimsObjApi.rawValue
         guard let url = URL(string: urlString) else { return }
         
         configureActivityIndicator(animating: true)
@@ -218,31 +226,30 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
                 let trimData = try JSONDecoder().decode([TrimsClass].self, from: data)
                 self.trimArray = trimData
 
+                self.trimArray = self.trimArray?.filter({ (trimsClass) -> Bool in
+                    return trimsClass.id == self.trimId
+                })
                 //Get back to the main queue
                 DispatchQueue.main.async {
-                    self.trimArray = self.trimArray?.filter({ (trimsClass) -> Bool in
-                       return trimsClass.makeId == self.makeId
-                    })
                     self.collectionV.reloadData()
                     self.configureActivityIndicator(animating: false)
                 }
             } catch  {
                 self.configureActivityIndicator(animating: false)
                 return
-
             }
             }.resume()
     }
     
     //MARK: - getPrice API
     func getPrice(){
-        guard let urlString = urls?.calculationApi  else { return }
+        let urlString = UrlsEnum.calculationApi.rawValue
         //params:make_id=&model_id=&submodel_id=&trim_id=
         var urlComponents = URLComponents(string: urlString)
         
         urlComponents?.queryItems = [
             URLQueryItem(name: "make_id", value: makeId),
-            URLQueryItem(name: "model_id", value: modeId),
+            URLQueryItem(name: "model_id", value: modelId),
             URLQueryItem(name: "submodel_id", value: subModelId),
             URLQueryItem(name: "trim_id", value: trimId),
         ]
@@ -292,41 +299,50 @@ extension MainViewController: UICollectionViewDelegateFlowLayout,UICollectionVie
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         
-        let vc = MainViewController(nibName: "MainViewController", bundle: nil)
+        let vc = MainViewController(nibName: "MainViewController", bundle: nil) as MainViewController
         vc.delegate = self
         guard let viewControllersCount = navigationController?.viewControllers.count else {return}
         switch viewControllersCount {
         case 1:
             guard let makeId = makeArray![indexPath.row].id else {  return }
             vc.makeId = makeId
-            
+            vc.hierarchyText = makeId
         case 2:
             guard let modelId = modelArray![indexPath.row].id else { return }
-            vc.modeId = modelId
+            guard let modelName = modelArray![indexPath.row].name else { return }
+
+            vc.modelId = modelId
             vc.makeId = makeId
+            vc.modelName = modelName
+            vc.hierarchyText = "\(makeId!)/\(modelName)"
+            
         case 3:
             guard let subModelId = subModelArray![indexPath.row].id else { return }
+            guard let subModelName = subModelArray![indexPath.row].name else { return }
+            guard let trimIds = subModelArray![indexPath.row].trimIds else { return }
+
             vc.subModelId = subModelId
-            vc.modeId = modeId
+            vc.subModelName = subModelName
+            vc.trimId = trimIds[0]
             vc.makeId = makeId
+            vc.hierarchyText = "\(makeId!)/\(modelName!)/\(subModelName)"
         case 4:
             guard let trimId = trimArray![indexPath.row].id else { return }
             vc.trimId = trimId
             vc.subModelId = subModelId
-            vc.modeId = modeId
+            vc.modelId = modelId
             vc.makeId = makeId
+            vc.title = SceneNames.trimScene.rawValue
             getPrice()
             return
         default:
             break
         }
-        
         vc.toggleSceneTypeFlag = toggleSceneTypeFlag
         navigationController?.pushViewController(vc, animated: true)
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionV.dequeueReusableCell(withReuseIdentifier: "CollectionVCell", for: indexPath) as! CollectionVCell
-        cell.imgView.image = nil
         guard let viewControllersCount = navigationController?.viewControllers.count else {return cell}
         switch viewControllersCount {
         case 1:

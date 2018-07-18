@@ -12,7 +12,6 @@ class TrimsClass:Decodable{
     var active:Bool?
     var createdAt:String?
     var id:String?
-    var makeId:String?
     var name:String?
     var updatedAt:String?
 
@@ -20,7 +19,6 @@ class TrimsClass:Decodable{
         case active
         case createdAt = "created_at"
         case id
-        case makeId = "make_id"
         case name
         case updatedAt = "updated_at"
     }

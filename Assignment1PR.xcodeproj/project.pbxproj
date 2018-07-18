@@ -20,6 +20,7 @@
 		C977C5FF20FB718C00427E26 /* CollectionVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C977C5FD20FB718C00427E26 /* CollectionVCell.swift */; };
 		C977C60020FB718C00427E26 /* CollectionVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C977C5FE20FB718C00427E26 /* CollectionVCell.xib */; };
 		C977C60220FB7B7B00427E26 /* extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C977C60120FB7B7B00427E26 /* extension.swift */; };
+		C9B30DBA20FF3001002276E7 /* SceneNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B30DB920FF3001002276E7 /* SceneNames.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		C977C5FD20FB718C00427E26 /* CollectionVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionVCell.swift; sourceTree = "<group>"; };
 		C977C5FE20FB718C00427E26 /* CollectionVCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectionVCell.xib; sourceTree = "<group>"; };
 		C977C60120FB7B7B00427E26 /* extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extension.swift; sourceTree = "<group>"; };
+		C9B30DB920FF3001002276E7 /* SceneNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneNames.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +128,7 @@
 			children = (
 				C9241B8F20FB559100469111 /* Urls.swift */,
 				C977C60120FB7B7B00427E26 /* extension.swift */,
+				C9B30DB920FF3001002276E7 /* SceneNames.swift */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -204,6 +207,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9241B9220FB57C700469111 /* ModelClass.swift in Sources */,
+				C9B30DBA20FF3001002276E7 /* SceneNames.swift in Sources */,
 				C9241B8720FB519E00469111 /* MainViewController.swift in Sources */,
 				C977C5FF20FB718C00427E26 /* CollectionVCell.swift in Sources */,
 				C977C60220FB7B7B00427E26 /* extension.swift in Sources */,

@@ -11,7 +11,6 @@ class SubModelClass:Decodable{
     
     var active:Bool?
     var createdAt:String?
-    var engineIds:[String]?
     var id:String?
     var modelId:String?
     var name:String?
@@ -21,9 +20,9 @@ class SubModelClass:Decodable{
     private enum CodingKeys:String, CodingKey{
         case active
         case createdAt = "created_at"
-        case engineIds = "engine_ids"
+   
         case id = "id"
-        case modelId = "model_id"
+        case modelId = "model"
         case name = "name"
         case trimIds = "trim_ids"
         case updatedAt = "updated_at"

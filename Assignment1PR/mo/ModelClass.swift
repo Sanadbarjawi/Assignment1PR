@@ -26,7 +26,7 @@ class ModelClass:Decodable{//array of objects
         case createdAt = "created_at"
         case discontinuedYear = "discontinued_year"
         case id = "id"
-        case makeId = "make_id"
+        case makeId = "make"
         case name = "name"
         case updatedAt = "updatedAt"
     }

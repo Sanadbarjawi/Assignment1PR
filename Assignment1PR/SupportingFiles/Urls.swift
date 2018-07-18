@@ -8,38 +8,47 @@
 
 import Foundation
 
- public class Urls{
-    
-    var baseUrl:String {
-        get {
-            return "http://test-api.seez.co/static"
-        }
-    }
-    var makeObjApi:String{
-        get{
-            return baseUrl + "/makes/"
-        }
-    }
-    var modelObjApi:String{
-        get{
-            return baseUrl + "/models/"
-        }
-    }
-    var subModelApi:String{
-        get{
-            return baseUrl + "/submodels/"
-        }
-    }
-    var trimsObjApi:String{
-        get{
-            return baseUrl + "/trims/"
-        }
-    }
+enum UrlsEnum:String{
+    case baseUrl = "http://test-api.seez.co/static"
+    case makeObjApi = "http://test-api.seez.co/static/makes/"
+    case modelObjApi = "http://test-api.seez.co/static/models/"
+    case subModelApi = "http://test-api.seez.co/static/submodels/"
+    case trimsObjApi = "http://test-api.seez.co/static/trims/"
     
     ///params:make_id=<id>&model_id=<id>&submodel_id=<id>&trim_id=<id>
-    var calculationApi:String{
-        get{
-            return "http://test-api.seez.co/ai/market-estimates/"
-        }
-    }
+    case calculationApi = "http://test-api.seez.co/ai/market-estimates/"
 }
+// public class Urls{
+
+//    var baseUrl:String {
+//        get {
+//            return "http://test-api.seez.co/static"
+//        }
+//    }
+//    var makeObjApi:String{
+//        get{
+//            return baseUrl + "/makes/"
+//        }
+//    }
+//    var modelObjApi:String{
+//        get{
+//            return baseUrl + "/models/"
+//        }
+//    }
+//    var subModelApi:String{
+//        get{
+//            return baseUrl + "/submodels/"
+//        }
+//    }
+//    var trimsObjApi:String{
+//        get{
+//            return baseUrl + "/trims/"
+//        }
+//    }
+    
+//    var calculationApi:String{
+//        get{
+//            return "http://test-api.seez.co/ai/market-estimates/"
+//        }
+//    }
+//}
