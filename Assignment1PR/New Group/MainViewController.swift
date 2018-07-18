@@ -52,7 +52,6 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
     }
 
     //MARK: - configureBackButton Function
-
     func configureBackButton(){
         if (navigationController?.viewControllers.count)! > 1 {
             let newBackButton = UIBarButtonItem(image: #imageLiteral(resourceName: "baseline_arrow_back_ios_black_18pt"), landscapeImagePhone: #imageLiteral(resourceName: "baseline_arrow_back_ios_black_18pt"), style: .plain, target: self, action: #selector(backPressed))
@@ -61,19 +60,8 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
             self.navigationItem.hidesBackButton = true
         }
     }
-    
-    
-    
-    //MARK: - SetUpUI Function
-    func setUpUI(){
 
-        configureBackButton()
-        let toggleSceneTypeBtn = UIBarButtonItem(image: nil, style: .plain, target: self, action: #selector(toggleSceneType))
-        toggleSceneTypeBtn.title = "Toggle"
-        self.navigationItem.rightBarButtonItem  = toggleSceneTypeBtn
-        collectionV.register(UINib(nibName: "CollectionVCell", bundle: nil), forCellWithReuseIdentifier: "CollectionVCell")
-    }
-    //MARK: - Buttons actions
+    //MARK: - Buttons Actions
     @objc func backPressed(){
         navigationController?.popViewController(animated: true)
         delegate?.configureSceneType(isGrid: toggleSceneTypeFlag)
@@ -85,7 +73,15 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
         collectionV.reloadData()
     }
     
-    //MARK: - custom actions
+    //MARK: - Custom UIFunctions
+    func setUpUI(){
+        
+        configureBackButton()
+        let toggleSceneTypeBtn = UIBarButtonItem(image: nil, style: .plain, target: self, action: #selector(toggleSceneType))
+        toggleSceneTypeBtn.title = "Toggle"
+        self.navigationItem.rightBarButtonItem  = toggleSceneTypeBtn
+        collectionV.register(UINib(nibName: "CollectionVCell", bundle: nil), forCellWithReuseIdentifier: "CollectionVCell")
+    }
     func switchSceneType(type:Bool){
         if type {
             itemsPerRow = 3
@@ -111,6 +107,7 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
             break
         }
     }
+    
     //MARK: - MakeObjects API
     func getMake(){
         
@@ -173,7 +170,6 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
     
     //MARK: - GetSubModelObjects API
     func getSubModelObjects(){
-        
         guard let urlString = urls?.subModelApi  else { return }
         guard let url = URL(string: urlString) else { return }
         configureActivityIndicator(animating: true)
