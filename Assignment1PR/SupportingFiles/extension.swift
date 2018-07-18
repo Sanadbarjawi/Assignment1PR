@@ -32,6 +32,19 @@ extension UIImageView{
     }
 
 }
+extension UINavigationController {
+    
+    ///Get previous view controller of the navigation stack
+    func previousViewController() -> UIViewController?{
+        
+        let lenght = self.viewControllers.count
+        
+        let previousViewController: UIViewController? = lenght >= 2 ? self.viewControllers[lenght-2] : nil
+        
+        return previousViewController
+    }
+    
+}
 extension UIViewController{
     ///configuration for activity indicator
     func configureActivityIndicator(animating:Bool){

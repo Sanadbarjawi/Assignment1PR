@@ -45,19 +45,31 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        delegate = self
-        guard ((delegate?.configureSceneType(isGrid: toggleSceneTypeFlag)) != nil) else {return}
-        
+        switchSceneType(type: toggleSceneTypeFlag)
         checkWhichScreen()
         setUpUI()
     }
 
     //MARK: - SetUpUI Function
     func setUpUI(){
+
+  
+        self.navigationItem.hidesBackButton = true
+        let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(backPressed))
+        self.navigationItem.leftBarButtonItem = newBackButton
+        if (navigationController?.viewControllers.count)! > 1 {
+            
+        }
+        
         let toggleSceneTypeBtn = UIBarButtonItem(image: nil, style: .plain, target: self, action: #selector(toggleSceneType))
         toggleSceneTypeBtn.title = "Toggle"
         self.navigationItem.rightBarButtonItem  = toggleSceneTypeBtn
         collectionV.register(UINib(nibName: "CollectionVCell", bundle: nil), forCellWithReuseIdentifier: "CollectionVCell")
+    }
+    
+    @objc func backPressed(){
+        navigationController?.popViewController(animated: true)
+        delegate?.configureSceneType(isGrid: toggleSceneTypeFlag)
     }
     func switchSceneType(type:Bool){
         print(" is grid ?\(type)")
@@ -66,6 +78,8 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
         }else{
             itemsPerRow = 1
         }
+        /////here
+        collectionV.reloadData()
     }
     @objc func toggleSceneType(){
 
@@ -96,9 +110,9 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
         configureActivityIndicator(animating: true)
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if error != nil {
-                print(error!.localizedDescription)
+                print(error.debugDescription)
+                return
             }
-            
             guard let data = data else { return }
             do {
                 let makeData = try JSONDecoder().decode([MakeClass].self, from: data)
@@ -110,6 +124,7 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
                 }
             } catch let jsonError {
                 print(jsonError)
+                return
             }
             }.resume()
     }
@@ -121,6 +136,8 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
         configureActivityIndicator(animating: true)
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if error != nil {
+                print(error.debugDescription)
+
                 return
             }
             
@@ -154,6 +171,8 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
         
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if error != nil {
+                print(error.debugDescription)
+
                 return
             }
             
@@ -266,16 +285,16 @@ extension MainViewController: UICollectionViewDelegateFlowLayout,UICollectionVie
         return numOfItems
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-      
         
-         let vc = MainViewController(nibName: "MainViewController", bundle: nil)
         
+        let vc = MainViewController(nibName: "MainViewController", bundle: nil)
+        vc.delegate = self
         guard let viewControllersCount = navigationController?.viewControllers.count else {return}
         switch viewControllersCount {
         case 1:
             guard let makeId = makeArray![indexPath.row].id else {  return }
             vc.makeId = makeId
-           
+            
         case 2:
             guard let modelId = modelArray![indexPath.row].id else { return }
             vc.modeId = modelId
@@ -299,6 +318,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout,UICollectionVie
         
         vc.toggleSceneTypeFlag = toggleSceneTypeFlag
         navigationController?.pushViewController(vc, animated: true)
+//        delegate?.configureSceneType(isGrid: toggleSceneTypeFlag)
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionV.dequeueReusableCell(withReuseIdentifier: "CollectionVCell", for: indexPath) as! CollectionVCell
