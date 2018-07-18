@@ -37,6 +37,7 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
     var urls:Urls?
     weak var delegate:SceneConfigurationDelegate?
     var toggleSceneTypeFlag = false
+    
     //MARK: - view life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,26 +51,41 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
         setUpUI()
     }
 
-    //MARK: - SetUpUI Function
-    func setUpUI(){
+    //MARK: - configureBackButton Function
 
+    func configureBackButton(){
         if (navigationController?.viewControllers.count)! > 1 {
             let newBackButton = UIBarButtonItem(image: #imageLiteral(resourceName: "baseline_arrow_back_ios_black_18pt"), landscapeImagePhone: #imageLiteral(resourceName: "baseline_arrow_back_ios_black_18pt"), style: .plain, target: self, action: #selector(backPressed))
             self.navigationItem.leftBarButtonItem = newBackButton
         }else{
             self.navigationItem.hidesBackButton = true
         }
-        
+    }
+    
+    
+    
+    //MARK: - SetUpUI Function
+    func setUpUI(){
+
+        configureBackButton()
         let toggleSceneTypeBtn = UIBarButtonItem(image: nil, style: .plain, target: self, action: #selector(toggleSceneType))
         toggleSceneTypeBtn.title = "Toggle"
         self.navigationItem.rightBarButtonItem  = toggleSceneTypeBtn
         collectionV.register(UINib(nibName: "CollectionVCell", bundle: nil), forCellWithReuseIdentifier: "CollectionVCell")
     }
-    
+    //MARK: - Buttons actions
     @objc func backPressed(){
         navigationController?.popViewController(animated: true)
         delegate?.configureSceneType(isGrid: toggleSceneTypeFlag)
     }
+    @objc func toggleSceneType(){
+        
+        toggleSceneTypeFlag.toggle()
+        switchSceneType(type: toggleSceneTypeFlag)
+        collectionV.reloadData()
+    }
+    
+    //MARK: - custom actions
     func switchSceneType(type:Bool){
         if type {
             itemsPerRow = 3
@@ -79,12 +95,7 @@ class MainViewController: UIViewController,SceneConfigurationDelegate {
         /////here
         collectionV.reloadData()
     }
-    @objc func toggleSceneType(){
-
-        toggleSceneTypeFlag.toggle()
-        switchSceneType(type: toggleSceneTypeFlag)
-        collectionV.reloadData()
-    }
+  
     func checkWhichScreen() {
         guard let viewControllersCount = navigationController?.viewControllers.count else {return}
         switch viewControllersCount {
