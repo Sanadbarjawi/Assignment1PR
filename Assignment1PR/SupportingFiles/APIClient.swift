@@ -8,8 +8,8 @@
 
 import Foundation
 
-class APIClient{
-     func dataTask(apiUrl: String, method: String, completion: @escaping (Bool,Data?) -> ()) {
+class networker{
+    static func dataTask(apiUrl: String, method: String, completion: @escaping (Bool,Data?) -> ()) {
         let urlString = UrlsEnum.makeObjApi.rawValue
         guard let url = URL(string: urlString) else { return }
         
@@ -24,16 +24,15 @@ class APIClient{
             }
             }.resume()
     }
-    
-    
-    
+}
+class APIClient{
     static func getMakeRequest(completion: @escaping (Bool,Data)->()) {
-
-        self.dataTask(apiUrl: UrlsEnum.makeObjApi.rawValue, method: "GET") { (success, data) in
+        
+        networker.dataTask(apiUrl: UrlsEnum.makeObjApi.rawValue, method: "GET") { (success, data) in
             guard let dataResponse = data else { return }
-
+            
             if success{
-              
+                
                 print(dataResponse)
                 completion(success, dataResponse)
             }else{
@@ -43,6 +42,8 @@ class APIClient{
     }
 }
     
+    
+
 /*USE THIS CODE ON SUNDAY(REPLACE MAINVIEWCONTROLLER SERVICES WITH THIS SHORTENED CODE)
  APIClient.getMakeRequest { (success, data) in
  print(data)
