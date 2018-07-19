@@ -20,7 +20,6 @@ class SubModelClass:Decodable{
     private enum CodingKeys:String, CodingKey{
         case active
         case createdAt = "created_at"
-   
         case id = "id"
         case modelId = "model"
         case name = "name"

@@ -18,37 +18,4 @@ enum UrlsEnum:String{
     ///params:make_id=<id>&model_id=<id>&submodel_id=<id>&trim_id=<id>
     case calculationApi = "http://test-api.seez.co/ai/market-estimates/"
 }
-// public class Urls{
 
-//    var baseUrl:String {
-//        get {
-//            return "http://test-api.seez.co/static"
-//        }
-//    }
-//    var makeObjApi:String{
-//        get{
-//            return baseUrl + "/makes/"
-//        }
-//    }
-//    var modelObjApi:String{
-//        get{
-//            return baseUrl + "/models/"
-//        }
-//    }
-//    var subModelApi:String{
-//        get{
-//            return baseUrl + "/submodels/"
-//        }
-//    }
-//    var trimsObjApi:String{
-//        get{
-//            return baseUrl + "/trims/"
-//        }
-//    }
-    
-//    var calculationApi:String{
-//        get{
-//            return "http://test-api.seez.co/ai/market-estimates/"
-//        }
-//    }
-//}
