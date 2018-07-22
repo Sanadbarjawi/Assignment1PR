@@ -41,7 +41,6 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
     var subModelName:String?
     var trimName:String?
     
-    
     var slicedSceneNamesArray:[String]?
     weak var delegate:SceneConfigurationProtocol?
     var toggleSceneTypeFlag = false
@@ -49,14 +48,13 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
     //MARK: - view life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        checkWhichScreen()
+        setUpUI()
+        switchSceneType(type: toggleSceneTypeFlag)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        checkWhichScreen()
-        setUpUI()
-        switchSceneType(type: toggleSceneTypeFlag)
     }
     
     //MARK: - configureBackButton Function
@@ -118,7 +116,7 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
     //MARK: - MakeObjects API
     func getMake(){
         configureActivityIndicator(animating: true)
-        APIClient.getMakeRequest { (success, data) in
+        APIClient.GetRequest(apiUrl: UrlsEnum.makeObjApi, apiUrlWithQueryComponents: nil) { (success, data) in
             do{
                 let makeData = try JSONDecoder().decode([MakeClass].self, from: data)
                 self.dataArray = makeData
@@ -135,14 +133,19 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
     //MARK: - GetModelObjects API
     func getModelObjects(){
         configureActivityIndicator(animating: true)
-        APIClient.getModelRequest { (success, data) in
+
+        APIClient.GetRequest(apiUrl: UrlsEnum.modelObjApi, apiUrlWithQueryComponents: nil) { (success, data) in
             do{
                 let ModelData = try JSONDecoder().decode([ModelClass].self, from: data)
                 self.dataArray = ModelData
                 var modelArray = self.dataArray as! [ModelClass]
-                modelArray = modelArray.filter({ (modelClass) -> Bool in
-                    return modelClass.makeId == self.makeId
-                })
+                //                modelArray = modelArray.filter({
+                //                    (modelArray) -> Bool in
+                //                    return modelArray.makeId == self.makeId
+                //                })
+                //shortened way $0 is used instead of the (modelClass) parameter(points on the first parameter)
+                modelArray = modelArray.filter({$0.makeId == self.makeId})
+                
                 self.dataArray = modelArray
             }
             catch let error {
@@ -152,12 +155,13 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
             self.configureActivityIndicator(animating: false)
             self.collectionV.reloadData()
         }
+    
     }
     
     //MARK: - GetSubModelObjects API
     func getSubModelObjects(){
         configureActivityIndicator(animating: true)
-        APIClient.getSubmodelRequest { (success, data) in
+        APIClient.GetRequest(apiUrl: UrlsEnum.subModelApi, apiUrlWithQueryComponents: nil) { (success, data) in
             do{
                 let subModelData = try JSONDecoder().decode([SubModelClass].self, from: data)
                 let submodelArray = subModelData.filter({ (submodelClass) -> Bool in
@@ -176,7 +180,7 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
     
     //MARK: - GetTrims API
     func getTrims(){
-        APIClient.getTrimsRequest { (success, data) in
+        APIClient.GetRequest(apiUrl: UrlsEnum.trimsObjApi, apiUrlWithQueryComponents: nil) { (success, data) in
             do{
                 let trimData = try JSONDecoder().decode([TrimsClass].self, from: data)
                 let trimArray = trimData.filter({ (trimsClass) -> Bool in
@@ -195,9 +199,16 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
     
     //MARK: - getPrice API
     func getPrice(){
-
+        var urlComponents = URLComponents(string:UrlsEnum.calculationApi.rawValue)
+        urlComponents?.queryItems = [
+            URLQueryItem(name: "make_id", value: makeId),
+            URLQueryItem(name: "model_id", value: modelId),
+            URLQueryItem(name: "submodel_id", value: subModelId),
+            URLQueryItem(name: "trim_id", value: trimId),
+        ]
         configureActivityIndicator(animating: true)
-        APIClient.getPrice(makeId: makeId!, modelId: modelId!, submodelId: subModelId!, trimId: trimId!) { (success, data) in
+      
+        APIClient.GetRequest(apiUrl: nil, apiUrlWithQueryComponents: urlComponents?.url) { (success, data) in
             if success{
                 let result = String(data: data, encoding: String.Encoding.utf8)
                 self.displayAlertWithDone(msg: "Result = \(result!)", completion: {
@@ -205,9 +216,11 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
                     self.navigationController?.popToRootViewController(animated: true)
                 })
             }
+            self.configureActivityIndicator(animating: false)
         }
+
+
     }
-    
     
 }
 
@@ -285,7 +298,6 @@ extension MainViewController: UICollectionViewDelegateFlowLayout,UICollectionVie
         }
         vc.toggleSceneTypeFlag = toggleSceneTypeFlag
         navigationController?.pushViewController(vc, animated: true)
-//      switchSceneType(type: toggleSceneTypeFlag)
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionV.dequeueReusableCell(withReuseIdentifier: "CollectionVCell", for: indexPath) as! CollectionVCell

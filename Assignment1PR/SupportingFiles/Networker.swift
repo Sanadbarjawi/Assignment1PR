@@ -7,14 +7,20 @@
 //
 
 import Foundation
-class Networker{
-    
-    //MARK: - retrieves the contents of the specified URL.
-    static func dataTask(apiUrl: String, method: String,completion: @escaping (Bool,Data?) -> ()) {
-        let urlString = apiUrl
-        
-        guard let url = URL(string: urlString) else { return }
-        URLSession.shared.dataTask(with: url) { (data, response, error) in//Creates a task that retrieves the contents of the specified URL, then calls a handler upon completion.
+final class Networker{
+   static private var task = URLSessionDataTask()
+
+    //MARK: - (DataTask) retrieves the contents of the specified URL.
+    static func dataTask(apiUrl: UrlsEnum?, apiUrlWithQueryComponents:URL? ,method: String,completion: @escaping (Bool,Data?) -> ()) {
+        let urlString:String?
+        if apiUrl == nil {
+            urlString = apiUrlWithQueryComponents?.absoluteString
+        }else{
+             urlString = apiUrl?.rawValue
+        }
+        guard let url = URL(string:urlString!) else { return }
+       
+        task = URLSession.shared.dataTask(with: url) { (data, response, error) in//Creates a task that retrieves the contents of the specified URL, then calls a handler upon completion.
             guard let data = data else { return }
             if error != nil {
                 print(error.debugDescription)
@@ -23,8 +29,10 @@ class Networker{
             }else{//success
                 completion( true,  data)
             }
-            }.resume()
-  
+        }
+        task.resume()
     }
 
+    
+    
 }
