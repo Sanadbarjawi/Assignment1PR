@@ -21,7 +21,7 @@ class SubModelClass:Decodable{
         case active
         case createdAt = "created_at"
         case id = "id"
-        case modelId = "model"
+        case modelId = "model_id"
         case name = "name"
         case trimIds = "trim_ids"
         case updatedAt = "updated_at"

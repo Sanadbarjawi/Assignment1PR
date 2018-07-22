@@ -13,14 +13,15 @@
 		C9241B8720FB519E00469111 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9241B8520FB519E00469111 /* MainViewController.swift */; };
 		C9241B8820FB519E00469111 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9241B8620FB519E00469111 /* MainViewController.xib */; };
 		C9241B8D20FB549E00469111 /* MakeClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9241B8C20FB549E00469111 /* MakeClass.swift */; };
-		C9241B9020FB559100469111 /* Urls.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9241B8F20FB559100469111 /* Urls.swift */; };
+		C9241B9020FB559100469111 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9241B8F20FB559100469111 /* URL.swift */; };
 		C9241B9220FB57C700469111 /* ModelClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9241B9120FB57C700469111 /* ModelClass.swift */; };
 		C9241B9420FB67EA00469111 /* SubModelClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9241B9320FB67EA00469111 /* SubModelClass.swift */; };
 		C9241B9620FB69BF00469111 /* TrimsClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9241B9520FB69BF00469111 /* TrimsClass.swift */; };
 		C95B40E62100C39B0018BDD5 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95B40E52100C39B0018BDD5 /* APIClient.swift */; };
+		C95B40E921044DBF0018BDD5 /* Networker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95B40E821044DBF0018BDD5 /* Networker.swift */; };
 		C977C5FF20FB718C00427E26 /* CollectionVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C977C5FD20FB718C00427E26 /* CollectionVCell.swift */; };
 		C977C60020FB718C00427E26 /* CollectionVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C977C5FE20FB718C00427E26 /* CollectionVCell.xib */; };
-		C977C60220FB7B7B00427E26 /* extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C977C60120FB7B7B00427E26 /* extension.swift */; };
+		C977C60220FB7B7B00427E26 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C977C60120FB7B7B00427E26 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,14 +33,15 @@
 		C9241B8520FB519E00469111 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		C9241B8620FB519E00469111 /* MainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
 		C9241B8C20FB549E00469111 /* MakeClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeClass.swift; sourceTree = "<group>"; };
-		C9241B8F20FB559100469111 /* Urls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Urls.swift; sourceTree = "<group>"; };
+		C9241B8F20FB559100469111 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		C9241B9120FB57C700469111 /* ModelClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelClass.swift; sourceTree = "<group>"; };
 		C9241B9320FB67EA00469111 /* SubModelClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubModelClass.swift; sourceTree = "<group>"; };
 		C9241B9520FB69BF00469111 /* TrimsClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrimsClass.swift; sourceTree = "<group>"; };
 		C95B40E52100C39B0018BDD5 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		C95B40E821044DBF0018BDD5 /* Networker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networker.swift; sourceTree = "<group>"; };
 		C977C5FD20FB718C00427E26 /* CollectionVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionVCell.swift; sourceTree = "<group>"; };
 		C977C5FE20FB718C00427E26 /* CollectionVCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectionVCell.xib; sourceTree = "<group>"; };
-		C977C60120FB7B7B00427E26 /* extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extension.swift; sourceTree = "<group>"; };
+		C977C60120FB7B7B00427E26 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,9 +128,10 @@
 		C9241B8E20FB556D00469111 /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
-				C9241B8F20FB559100469111 /* Urls.swift */,
-				C977C60120FB7B7B00427E26 /* extension.swift */,
+				C977C60120FB7B7B00427E26 /* Extensions.swift */,
+				C9241B8F20FB559100469111 /* URL.swift */,
 				C95B40E52100C39B0018BDD5 /* APIClient.swift */,
+				C95B40E821044DBF0018BDD5 /* Networker.swift */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -206,15 +209,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C95B40E921044DBF0018BDD5 /* Networker.swift in Sources */,
 				C9241B9220FB57C700469111 /* ModelClass.swift in Sources */,
 				C9241B8720FB519E00469111 /* MainViewController.swift in Sources */,
 				C977C5FF20FB718C00427E26 /* CollectionVCell.swift in Sources */,
-				C977C60220FB7B7B00427E26 /* extension.swift in Sources */,
+				C977C60220FB7B7B00427E26 /* Extensions.swift in Sources */,
 				C9241B7420FB460D00469111 /* AppDelegate.swift in Sources */,
 				C95B40E62100C39B0018BDD5 /* APIClient.swift in Sources */,
 				C9241B9420FB67EA00469111 /* SubModelClass.swift in Sources */,
 				C9241B8D20FB549E00469111 /* MakeClass.swift in Sources */,
-				C9241B9020FB559100469111 /* Urls.swift in Sources */,
+				C9241B9020FB559100469111 /* URL.swift in Sources */,
 				C9241B9620FB69BF00469111 /* TrimsClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

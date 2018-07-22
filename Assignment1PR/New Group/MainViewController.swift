@@ -122,167 +122,98 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
     
     //MARK: - MakeObjects API
     func getMake(){
-        dataArray?.removeAll()
-
-        let urlString = UrlsEnum.makeObjApi.rawValue
-        guard let url = URL(string: urlString) else { return }
         configureActivityIndicator(animating: true)
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if error != nil {
-                print(error.debugDescription)
-                return
-            }
-            guard let data = data else { return }
-            do {
+        APIClient.getMakeRequest { (success, data) in
+            do{
                 let makeData = try JSONDecoder().decode([MakeClass].self, from: data)
                 self.dataArray = makeData
-                DispatchQueue.main.async {
-                    self.collectionV.reloadData()
-                    self.configureActivityIndicator(animating: false)
-                }
-            } catch let jsonError {
-                print(jsonError)
+            }
+            catch let error {
+                print(error)
                 return
             }
-            }.resume()
+            self.configureActivityIndicator(animating: false)
+            self.collectionV.reloadData()
+        }
     }
     
     //MARK: - GetModelObjects API
     func getModelObjects(){
-        dataArray?.removeAll()
-
-        let urlString = UrlsEnum.modelObjApi.rawValue
-        guard let url = URL(string: urlString) else { return }
         configureActivityIndicator(animating: true)
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if error != nil {
-                print(error.debugDescription)
-                return
-            }
-            guard let data = data else { return }
-            do {
+        APIClient.getModelRequest { (success, data) in
+            do{
                 let ModelData = try JSONDecoder().decode([ModelClass].self, from: data)
                 self.dataArray = ModelData
-                //Get back to the main queue
                 var modelArray = self.dataArray as! [ModelClass]
                 modelArray = modelArray.filter({ (modelClass) -> Bool in
-                    modelClass.makeId == self.makeId
+                    return modelClass.makeId == self.makeId
                 })
                 self.dataArray = modelArray
-                DispatchQueue.main.async {
-                    self.collectionV.reloadData()
-                    self.configureActivityIndicator(animating: false)
-                }
-            } catch{
-                self.configureActivityIndicator(animating: false)
+            }
+            catch let error {
+                print(error)
                 return
             }
-            }.resume()
+            self.configureActivityIndicator(animating: false)
+            self.collectionV.reloadData()
+        }
     }
     
     //MARK: - GetSubModelObjects API
     func getSubModelObjects(){
-        dataArray?.removeAll()
-
-        let urlString = UrlsEnum.subModelApi.rawValue
-        guard let url = URL(string: urlString) else { return }
         configureActivityIndicator(animating: true)
-        
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if error != nil {
-                print(error.debugDescription)
-                return
-            }
-            
-            guard let data = data else { return }
-            do {
+        APIClient.getSubmodelRequest { (success, data) in
+            do{
                 let subModelData = try JSONDecoder().decode([SubModelClass].self, from: data)
-                self.dataArray = subModelData
-                //Get back to the main queue
-                var subModelArray = self.dataArray as! [SubModelClass]
-
-                subModelArray = subModelArray.filter({ (subModelClass) -> Bool in
-                    return subModelClass.modelId == self.modelId
+                let submodelArray = subModelData.filter({ (submodelClass) -> Bool in
+                    return submodelClass.modelId == self.modelId
                 })
-                self.dataArray = subModelArray
-
-                DispatchQueue.main.async {
-                    self.collectionV.reloadData()
-                    self.configureActivityIndicator(animating: false)
-                }
-            } catch {
-                self.configureActivityIndicator(animating: false)
-                return
-                
+                self.dataArray = submodelArray
             }
-            }.resume()
+            catch let error {
+                print(error)
+                return
+            }
+            self.configureActivityIndicator(animating: false)
+            self.collectionV.reloadData()
+        }
     }
-    
     
     //MARK: - GetTrims API
     func getTrims(){
-        dataArray?.removeAll()
-        let urlString = UrlsEnum.trimsObjApi.rawValue
-        guard let url = URL(string: urlString) else { return }
-        
-        configureActivityIndicator(animating: true)
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if error != nil {
-                return
-            }
-            
-            guard let data = data else { return }
-            do {
+        APIClient.getTrimsRequest { (success, data) in
+            do{
                 let trimData = try JSONDecoder().decode([TrimsClass].self, from: data)
-                self.dataArray = trimData
-                var trimArray = self.dataArray as! [TrimsClass]
-         
-                trimArray = trimArray.filter({ (trimsClass) -> Bool in
+                let trimArray = trimData.filter({ (trimsClass) -> Bool in
                     return (self.trimIdsArray?.contains(trimsClass.id!))!
                 })
                 self.dataArray = trimArray
-
-                //Get back to the main queue
-                DispatchQueue.main.async {
-                    self.collectionV.reloadData()
-                    self.configureActivityIndicator(animating: false)
-                }
-            } catch  {
-                self.configureActivityIndicator(animating: false)
+            }
+            catch let error {
+                print(error.localizedDescription)
                 return
             }
-            }.resume()
+            self.configureActivityIndicator(animating: false)
+            self.collectionV.reloadData()
+        }
     }
     
     //MARK: - getPrice API
     func getPrice(){
-        let urlString = UrlsEnum.calculationApi.rawValue
-        //params:make_id=&model_id=&submodel_id=&trim_id=
-        var urlComponents = URLComponents(string: urlString)
-        
-        urlComponents?.queryItems = [
-            URLQueryItem(name: "make_id", value: makeId),
-            URLQueryItem(name: "model_id", value: modelId),
-            URLQueryItem(name: "submodel_id", value: subModelId),
-            URLQueryItem(name: "trim_id", value: trimId),
-        ]
         configureActivityIndicator(animating: true)
-        URLSession.shared.dataTask(with: (urlComponents?.url)!) { (data, response, error) in
-            if error != nil {
-                self.configureActivityIndicator(animating: false)
-                return
-            }
-            if let data = data {
+        APIClient.getPrice(makeId: makeId!, modelId: modelId!, submodelId: subModelId!, trimId: trimId!) { (success, data) in
+            if success{
                 let result = String(data: data, encoding: String.Encoding.utf8)
                 self.displayAlertWithDone(msg: "Result = \(result!)", completion: {
                     self.configureActivityIndicator(animating: false)
                     self.navigationController?.popToRootViewController(animated: true)
                 })
             }
-            }.resume()
+        }
     }
+    
+    
 }
-
 
 extension MainViewController: UICollectionViewDelegateFlowLayout,UICollectionViewDelegate,UICollectionViewDataSource{
     //MARK: - CollectionView stubs
@@ -340,7 +271,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout,UICollectionVie
             guard let subModelId = subModelArray[indexPath.row].id else { return }
             guard let subModelName = subModelArray[indexPath.row].name else { return }
             guard let trimIds = subModelArray[indexPath.row].trimIds else { return }
-            
+            vc.modelId = modelId
             vc.subModelId = subModelId
             vc.subModelName = subModelName
             vc.trimIdsArray = trimIds
@@ -348,13 +279,9 @@ extension MainViewController: UICollectionViewDelegateFlowLayout,UICollectionVie
             vc.makeId = makeId
             vc.hierarchyText = "\(makeId!)/\(modelName!)/\(subModelName)"
         case 4:
-            let trimArray = dataArray as! [TrimsClass]
-            guard let trimId = trimArray[indexPath.row].id else { return }
-            vc.trimId = trimId
-            vc.subModelId = subModelId
-            vc.modelId = modelId
-            vc.makeId = makeId
-            vc.hierarchyText = "\(makeId!)/\(modelName!)/\(subModelName!)/\(trimId)"
+            guard trimIdsArray![indexPath.row].count != 0 else {return}
+            trimId = trimIdsArray?[indexPath.row]
+            hierarchyText = "\(makeId!)/\(modelName!)/\(subModelName!)"
             getPrice()
             return
         default:
