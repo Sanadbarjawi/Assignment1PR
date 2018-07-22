@@ -16,6 +16,7 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
     
     func configureSceneTypeDelegate(isGrid: Bool) {//false = list ,true = grid
         switchSceneType(type: isGrid)
+        toggleSceneTypeFlag = isGrid
     }
     
     //MARK: - Outlets
@@ -27,11 +28,6 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
     var itemsPerRow:CGFloat = 1
     
     //MARK: - custom Variables
-//    var makeArray : [MakeClass]?
-//    var modelArray : [ModelClass]?
-//    var subModelArray : [SubModelClass]?
-//    var trimArray : [TrimsClass]?
-    
     var dataArray:[Decodable]?
     var makeId:String?
     var modelId:String?
@@ -39,7 +35,7 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
     var trimId:String?
     var trimIdsArray:[String]?
     
-    //names
+    //Hierarchy names
     var hierarchyText:String?
     var modelName:String?
     var subModelName:String?
@@ -53,7 +49,7 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
     //MARK: - view life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+    
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -85,7 +81,6 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
     }
     
     //MARK: - Custom UIFunctions
-    
     func setUpUI(){
         if hierarchyText != nil{hierarchyLbl.text = hierarchyText}
         configureBackButton()
@@ -200,6 +195,7 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
     
     //MARK: - getPrice API
     func getPrice(){
+
         configureActivityIndicator(animating: true)
         APIClient.getPrice(makeId: makeId!, modelId: modelId!, submodelId: subModelId!, trimId: trimId!) { (success, data) in
             if success{
@@ -289,6 +285,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout,UICollectionVie
         }
         vc.toggleSceneTypeFlag = toggleSceneTypeFlag
         navigationController?.pushViewController(vc, animated: true)
+//      switchSceneType(type: toggleSceneTypeFlag)
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionV.dequeueReusableCell(withReuseIdentifier: "CollectionVCell", for: indexPath) as! CollectionVCell

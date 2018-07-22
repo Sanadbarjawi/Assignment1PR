@@ -36,7 +36,6 @@ class APIClient{
                     completion(success, dataResponse)
                 }
             }
-            
         }
     }
     
