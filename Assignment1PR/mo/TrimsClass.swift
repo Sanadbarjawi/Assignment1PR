@@ -7,7 +7,7 @@
 //
 
 import Foundation
-class TrimsClass:Decodable{
+class TrimsClass:Decodable , CarNameable{
     
     var active:Bool?
     var createdAt:String?

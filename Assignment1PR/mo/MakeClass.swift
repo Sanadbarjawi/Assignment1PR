@@ -7,7 +7,19 @@
 //
 
 import Foundation
-class MakeClass:Decodable{//array of objects
+ protocol CarNameable{
+    var name:String?{get set}
+}
+protocol ImageDownloadable {
+    var logoUri:String?{get set}
+    var name:String?{get set}
+
+}
+
+
+
+class MakeClass: Decodable ,CarNameable ,ImageDownloadable{
+    
 
     var active:Bool?
     var createdAt:String?

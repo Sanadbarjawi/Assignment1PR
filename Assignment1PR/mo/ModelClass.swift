@@ -7,7 +7,8 @@
 //
 
 import Foundation
-class ModelClass:Decodable{//array of objects
+class ModelClass:Decodable , CarNameable{
+
 
     var active:Bool?
     var bodyTypeId:String?
@@ -27,7 +28,7 @@ class ModelClass:Decodable{//array of objects
         case discontinuedYear = "discontinued_year"
         case id = "id"
         case makeId = "make_id"
-        case name = "name"
+        case name 
         case updatedAt = "updatedAt"
     }
 }

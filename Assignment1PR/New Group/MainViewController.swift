@@ -28,7 +28,7 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
     var itemsPerRow:CGFloat = 1
     
     //MARK: - custom Variables
-    var dataArray:[Decodable]?
+    var itemsArray:[CarNameable]?
     var makeId:String?
     var modelId:String?
     var subModelId:String?
@@ -121,7 +121,7 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
             if error == nil && data != nil{
                 do{
                     let makeData = try JSONDecoder().decode([MakeClass].self, from: data!)
-                    self.dataArray = makeData
+                    self.itemsArray = makeData
                 }
                 catch let error {
                     print(error)
@@ -143,8 +143,9 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
             if error == nil && data != nil{
                 do{
                     let ModelData = try JSONDecoder().decode([ModelClass].self, from: data!)
-                    self.dataArray = ModelData
-                    var modelArray = self.dataArray as! [ModelClass]
+                    self.itemsArray = ModelData
+                    
+                    var modelArray = self.itemsArray as! [ModelClass]
                     //                modelArray = modelArray.filter({
                     //                    (modelArray) -> Bool in
                     //                    return modelArray.makeId == self.makeId
@@ -152,7 +153,7 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
                     //shortened way $0 is used instead of the (modelClass) parameter(points on the first parameter)
                     modelArray = modelArray.filter({$0.makeId == self.makeId})
                     
-                    self.dataArray = modelArray
+                    self.itemsArray = modelArray
                 }
                 catch let error {
                     print(error)
@@ -177,7 +178,7 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
                     let submodelArray = subModelData.filter({ (submodelClass) -> Bool in
                         return submodelClass.modelId == self.modelId
                     })
-                    self.dataArray = submodelArray
+                    self.itemsArray = submodelArray
                 }
                 catch let error {
                     print(error)
@@ -202,7 +203,7 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
                     let trimArray = trimData.filter({ (trimsClass) -> Bool in
                         return (self.trimIdsArray?.contains(trimsClass.id!))!
                     })
-                    self.dataArray = trimArray
+                    self.itemsArray = trimArray
                 }
                 catch let error {
                     print(error.localizedDescription)
@@ -249,19 +250,19 @@ extension MainViewController: UICollectionViewDelegateFlowLayout,UICollectionVie
         
         switch viewControllersCount {
         case 1:
-            let makeArray = dataArray as! [MakeClass]?
+            let makeArray = itemsArray as! [MakeClass]?
             guard (makeArray?.count) != nil else{return 0}
             numOfItems = (makeArray?.count)!
         case 2:
-            let modelArray = dataArray as! [ModelClass]?
+            let modelArray = itemsArray as! [ModelClass]?
             guard (modelArray?.count) != nil else{return 0}
             numOfItems = (modelArray?.count)!
         case 3:
-            let subModelArray = dataArray as! [SubModelClass]?
+            let subModelArray = itemsArray as! [SubModelClass]?
                 guard (subModelArray?.count) != nil else{return 0}
             numOfItems = (subModelArray?.count)!
         case 4:
-            let trimClass = dataArray as! [TrimsClass]?
+            let trimClass = itemsArray as! [TrimsClass]?
             guard (trimClass?.count) != nil else{return 0}
             numOfItems = (trimClass?.count)!
         default:
@@ -277,12 +278,12 @@ extension MainViewController: UICollectionViewDelegateFlowLayout,UICollectionVie
         guard let viewControllersCount = navigationController?.viewControllers.count else {return}
         switch viewControllersCount {
         case 1:
-            let makeArray = dataArray as! [MakeClass]
+            let makeArray = itemsArray as! [MakeClass]
             guard let makeId = makeArray[indexPath.row].id else {  return }
             vc.makeId = makeId
             vc.hierarchyText = makeId
         case 2:
-            let modelArray = dataArray as! [ModelClass]
+            let modelArray = itemsArray as! [ModelClass]
             guard let modelId = modelArray[indexPath.row].id else { return }
             guard let modelName = modelArray[indexPath.row].name else { return }
             
@@ -292,7 +293,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout,UICollectionVie
             vc.hierarchyText = "\(makeId!)/\(modelName)"
             
         case 3:
-            let subModelArray = dataArray as! [SubModelClass]
+            let subModelArray = itemsArray as! [SubModelClass]
             guard let subModelId = subModelArray[indexPath.row].id else { return }
             guard let subModelName = subModelArray[indexPath.row].name else { return }
             guard let trimIds = subModelArray[indexPath.row].trimIds else { return }
@@ -318,25 +319,14 @@ extension MainViewController: UICollectionViewDelegateFlowLayout,UICollectionVie
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionV.dequeueReusableCell(withReuseIdentifier: "CollectionVCell", for: indexPath) as! CollectionVCell
         guard let viewControllersCount = navigationController?.viewControllers.count else {return cell}
+        cell.lbl1.text = itemsArray![indexPath.row].name
         switch viewControllersCount {
         case 1:
-            let makeArray = dataArray as! [MakeClass]
-            cell.imgView.isHidden = false
+            let makeArray = itemsArray as! [MakeClass]
             cell.imgView.downloadedFrom(link: makeArray[indexPath.row].logoUri!)
-            cell.lbl1.text = makeArray[indexPath.row].name
-        case 2:
-            let modelArray = dataArray as! [ModelClass]
-            cell.imgView.isHidden = true
-            cell.lbl1.text = modelArray[indexPath.row].name
-        case 3:
-            let subModelArray = dataArray as! [SubModelClass]
-            cell.imgView.isHidden = true
-            cell.lbl1.text = subModelArray[indexPath.row].name
-        case 4:
-            let trimArray = dataArray as! [TrimsClass]
-            cell.imgView.isHidden = true
-            cell.lbl1.text = trimArray[indexPath.row].name
+            cell.imgView.isHidden = false
         default:
+            cell.imgView.isHidden = true
             break
         }
         return cell

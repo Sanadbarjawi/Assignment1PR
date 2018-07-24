@@ -7,7 +7,7 @@
 //
 
 import Foundation
-class SubModelClass:Decodable{
+class SubModelClass:Decodable , CarNameable{
     
     var active:Bool?
     var createdAt:String?
@@ -22,7 +22,7 @@ class SubModelClass:Decodable{
         case createdAt = "created_at"
         case id = "id"
         case modelId = "model_id"
-        case name = "name"
+        case name 
         case trimIds = "trim_ids"
         case updatedAt = "updated_at"
     }
