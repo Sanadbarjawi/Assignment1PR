@@ -7,23 +7,25 @@
 //
 
 import Foundation
-
-
 final class APIClient{
+   
+    
     //MARK: - GetRequest(GetMakeObjects, GetModelObjects, GetSubModelObjects, GetSubModelObjects, GetTrims) APIs
-    ///GetRequest
-    static func GetRequest(apiUrl:UrlsEnum?,apiUrlWithQueryComponents:URL?,completion: @escaping (Bool,Data)->()) {
-        Networker.dataTask(apiUrl: apiUrl, apiUrlWithQueryComponents: apiUrlWithQueryComponents, method: "GET") { (success, data) in
+    ///Request
+    static func apiRequest(url:URL,method:Networker.HttpMethodEnum,completion: @escaping (Error?,Data?)->()) {
+        Networker.dataTastRequest(url: url, method: method) { (error, data) in
             guard let dataResponse = data else { return }
-            DispatchQueue.main.async {//main thread
-                if success{
-                    completion(success, dataResponse)
+            DispatchQueue.main.async {
+                if error == nil{
+                    completion(nil, dataResponse)
                 }else{
-                    completion(success, dataResponse)
+                    completion(error, dataResponse)
                 }
             }
         }
     }
+    
+    
 
 }
 

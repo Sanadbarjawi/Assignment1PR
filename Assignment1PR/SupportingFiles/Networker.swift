@@ -10,29 +10,30 @@ import Foundation
 final class Networker{
    static private var task = URLSessionDataTask()
 
-    //MARK: - (DataTask) retrieves the contents of the specified URL.
-    static func dataTask(apiUrl: UrlsEnum?, apiUrlWithQueryComponents:URL? ,method: String,completion: @escaping (Bool,Data?) -> ()) {
-        let urlString:String?
-        if apiUrl == nil {
-            urlString = apiUrlWithQueryComponents?.absoluteString
-        }else{
-             urlString = apiUrl?.rawValue
-        }
-        guard let url = URL(string:urlString!) else { return }
-       
-        task = URLSession.shared.dataTask(with: url) { (data, response, error) in//Creates a task that retrieves the contents of the specified URL, then calls a handler upon completion.
-            guard let data = data else { return }
+    static func dataTastRequest(url:URL,method: HttpMethodEnum,completion: @escaping (Error?,Data?) -> ()){
+     
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = method.rawValue
+        
+        task = URLSession.shared.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
             if error != nil {
                 print(error.debugDescription)
-                completion(false, data)
+                completion(error, data)
                 return
             }else{//success
-                completion( true,  data)
+                completion(nil, data)
             }
-        }
+        })
         task.resume()
     }
-
     
+    
+    
+    
+    
+    enum HttpMethodEnum:String{
+        case post = "POST"
+        case get = "GET"
+    }
     
 }

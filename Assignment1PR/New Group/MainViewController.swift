@@ -45,12 +45,12 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
     weak var delegate:SceneConfigurationProtocol?
     var toggleSceneTypeFlag = false
     
+    
     //MARK: - view life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         checkWhichScreen()
         setUpUI()
-        switchSceneType(type: toggleSceneTypeFlag)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -116,62 +116,73 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
     //MARK: - MakeObjects API
     func getMake(){
         configureActivityIndicator(animating: true)
-        APIClient.GetRequest(apiUrl: UrlsEnum.makeObjApi, apiUrlWithQueryComponents: nil) { (success, data) in
-            do{
-                let makeData = try JSONDecoder().decode([MakeClass].self, from: data)
-                self.dataArray = makeData
-            }
-            catch let error {
-                print(error)
-                return
+        guard let url = URL(string:UrlsEnum.makeObjApi.rawValue)else{return}
+        APIClient.apiRequest(url: url, method: Networker.HttpMethodEnum.get) { (error, data) in
+            if error == nil && data != nil{
+                do{
+                    let makeData = try JSONDecoder().decode([MakeClass].self, from: data!)
+                    self.dataArray = makeData
+                }
+                catch let error {
+                    print(error)
+                    return
+                }
             }
             self.configureActivityIndicator(animating: false)
             self.collectionV.reloadData()
         }
+        
     }
     
     //MARK: - GetModelObjects API
     func getModelObjects(){
         configureActivityIndicator(animating: true)
-
-        APIClient.GetRequest(apiUrl: UrlsEnum.modelObjApi, apiUrlWithQueryComponents: nil) { (success, data) in
-            do{
-                let ModelData = try JSONDecoder().decode([ModelClass].self, from: data)
-                self.dataArray = ModelData
-                var modelArray = self.dataArray as! [ModelClass]
-                //                modelArray = modelArray.filter({
-                //                    (modelArray) -> Bool in
-                //                    return modelArray.makeId == self.makeId
-                //                })
-                //shortened way $0 is used instead of the (modelClass) parameter(points on the first parameter)
-                modelArray = modelArray.filter({$0.makeId == self.makeId})
-                
-                self.dataArray = modelArray
-            }
-            catch let error {
-                print(error)
-                return
+        guard let url = URL(string:UrlsEnum.modelObjApi.rawValue)else{return}
+        
+        APIClient.apiRequest(url: url, method: Networker.HttpMethodEnum.get) { (error, data) in
+            if error == nil && data != nil{
+                do{
+                    let ModelData = try JSONDecoder().decode([ModelClass].self, from: data!)
+                    self.dataArray = ModelData
+                    var modelArray = self.dataArray as! [ModelClass]
+                    //                modelArray = modelArray.filter({
+                    //                    (modelArray) -> Bool in
+                    //                    return modelArray.makeId == self.makeId
+                    //                })
+                    //shortened way $0 is used instead of the (modelClass) parameter(points on the first parameter)
+                    modelArray = modelArray.filter({$0.makeId == self.makeId})
+                    
+                    self.dataArray = modelArray
+                }
+                catch let error {
+                    print(error)
+                    return
+                }
             }
             self.configureActivityIndicator(animating: false)
             self.collectionV.reloadData()
         }
-    
+        
     }
     
     //MARK: - GetSubModelObjects API
     func getSubModelObjects(){
         configureActivityIndicator(animating: true)
-        APIClient.GetRequest(apiUrl: UrlsEnum.subModelApi, apiUrlWithQueryComponents: nil) { (success, data) in
-            do{
-                let subModelData = try JSONDecoder().decode([SubModelClass].self, from: data)
-                let submodelArray = subModelData.filter({ (submodelClass) -> Bool in
-                    return submodelClass.modelId == self.modelId
-                })
-                self.dataArray = submodelArray
-            }
-            catch let error {
-                print(error)
-                return
+        guard let url = URL(string:UrlsEnum.subModelApi.rawValue)else{return}
+        
+        APIClient.apiRequest(url: url, method: Networker.HttpMethodEnum.get) { (error, data) in
+            if error == nil && data != nil{
+                do{
+                    let subModelData = try JSONDecoder().decode([SubModelClass].self, from: data!)
+                    let submodelArray = subModelData.filter({ (submodelClass) -> Bool in
+                        return submodelClass.modelId == self.modelId
+                    })
+                    self.dataArray = submodelArray
+                }
+                catch let error {
+                    print(error)
+                    return
+                }
             }
             self.configureActivityIndicator(animating: false)
             self.collectionV.reloadData()
@@ -180,17 +191,23 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
     
     //MARK: - GetTrims API
     func getTrims(){
-        APIClient.GetRequest(apiUrl: UrlsEnum.trimsObjApi, apiUrlWithQueryComponents: nil) { (success, data) in
-            do{
-                let trimData = try JSONDecoder().decode([TrimsClass].self, from: data)
-                let trimArray = trimData.filter({ (trimsClass) -> Bool in
-                    return (self.trimIdsArray?.contains(trimsClass.id!))!
-                })
-                self.dataArray = trimArray
-            }
-            catch let error {
-                print(error.localizedDescription)
-                return
+        self.configureActivityIndicator(animating: true)
+        guard let url = URL(string:UrlsEnum.trimsObjApi.rawValue)else{return}
+        
+        APIClient.apiRequest(url: url, method: Networker.HttpMethodEnum.get) { (error, data) in
+            if error == nil && data != nil{
+                
+                do{
+                    let trimData = try JSONDecoder().decode([TrimsClass].self, from: data!)
+                    let trimArray = trimData.filter({ (trimsClass) -> Bool in
+                        return (self.trimIdsArray?.contains(trimsClass.id!))!
+                    })
+                    self.dataArray = trimArray
+                }
+                catch let error {
+                    print(error.localizedDescription)
+                    return
+                }
             }
             self.configureActivityIndicator(animating: false)
             self.collectionV.reloadData()
@@ -200,6 +217,7 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
     //MARK: - getPrice API
     func getPrice(){
         var urlComponents = URLComponents(string:UrlsEnum.calculationApi.rawValue)
+        
         urlComponents?.queryItems = [
             URLQueryItem(name: "make_id", value: makeId),
             URLQueryItem(name: "model_id", value: modelId),
@@ -207,10 +225,10 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
             URLQueryItem(name: "trim_id", value: trimId),
         ]
         configureActivityIndicator(animating: true)
-      
-        APIClient.GetRequest(apiUrl: nil, apiUrlWithQueryComponents: urlComponents?.url) { (success, data) in
-            if success{
-                let result = String(data: data, encoding: String.Encoding.utf8)
+        guard let url = (urlComponents?.url) else{return}
+        APIClient.apiRequest(url: url, method: Networker.HttpMethodEnum.get) { (error, data) in
+            if error == nil && data != nil{
+                let result = String(data: data!, encoding: String.Encoding.utf8)
                 self.displayAlertWithDone(msg: "Result = \(result!)", completion: {
                     self.configureActivityIndicator(animating: false)
                     self.navigationController?.popToRootViewController(animated: true)
@@ -218,8 +236,6 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
             }
             self.configureActivityIndicator(animating: false)
         }
-
-
     }
     
 }

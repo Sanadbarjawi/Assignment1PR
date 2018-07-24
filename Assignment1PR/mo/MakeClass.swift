@@ -7,7 +7,7 @@
 //
 
 import Foundation
-class MakeClass:Codable{//array of objects
+class MakeClass:Decodable{//array of objects
 
     var active:Bool?
     var createdAt:String?
