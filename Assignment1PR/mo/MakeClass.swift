@@ -7,13 +7,11 @@
 //
 
 import Foundation
- protocol CarNameable{
+protocol CarNameable{
     var name:String?{get set}
 }
 protocol ImageDownloadable {
     var logoUri:String?{get set}
-    var name:String?{get set}
-
 }
 
 
