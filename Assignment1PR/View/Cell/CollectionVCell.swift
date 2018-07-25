@@ -18,5 +18,10 @@ class CollectionVCell: UICollectionViewCell {
 
         // Initialization code
     }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.imgView.image = nil
+    }
     
 }
+ 

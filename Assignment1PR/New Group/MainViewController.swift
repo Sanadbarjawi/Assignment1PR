@@ -51,6 +51,7 @@ class MainViewController: UIViewController,SceneConfigurationProtocol {
         super.viewDidLoad()
         checkWhichScreen()
         setUpUI()
+        switchSceneType(type: toggleSceneTypeFlag)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -331,7 +332,9 @@ extension MainViewController: UICollectionViewDelegateFlowLayout,UICollectionVie
         }
         return cell
     }
-    
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        collectionV.reloadData()
+    }
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
