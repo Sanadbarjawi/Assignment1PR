@@ -19,7 +19,12 @@ class ModelClass:Decodable , CarNameable{
     var makeId:String?
     var name:String?
     var updatedAt:String?
-  
+    var subModelVar:SubModelClass!
+    
+    init(subModel:SubModelClass) {
+        self.subModelVar = subModel
+    }
+    
     private enum CodingKeys:String, CodingKey{
         case active
         case bodyTypeId = "body_type_id"
